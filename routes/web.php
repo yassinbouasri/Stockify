@@ -7,7 +7,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/products', ProductListings::class)->name('products');
 
 Route::middleware([
     'auth:sanctum',
@@ -17,4 +16,7 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    Route::get('/products', ProductListings::class)->name('products');
+    
 });
