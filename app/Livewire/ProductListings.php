@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Category;
 use App\Models\Product;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
@@ -23,7 +24,11 @@ class ProductListings extends Component
         if ($this->search) {
             $query->where('name', 'like', '%'.$this->search.'%')
                 ->orWhere('description', 'like', '%'.$this->search.'%')
-                ->orWhere("sku", "like", '%'.$this->search.'%');
+                ->orWhere("sku", "like", '%'.$this->search.'%')
+                ->orWhereHas('category', function ($query) {
+                    $query->where('name', 'like', '%'.$this->search.'%');
+                })
+            ;
             $this->resetPage();
         }
         return $query->paginate(20);
