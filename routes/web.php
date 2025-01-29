@@ -1,10 +1,13 @@
 <?php
 
+use App\Livewire\ProductListings;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/products', ProductListings::class)->name('products');
 
 Route::middleware([
     'auth:sanctum',
