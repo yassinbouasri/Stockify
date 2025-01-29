@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use App\Models\Customer;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Stock;
 use App\Models\User;
@@ -26,5 +27,6 @@ class DatabaseSeeder extends Seeder
         Product::factory(100)->create();
         Stock::factory(20)->create();
         Customer::factory(10)->create();
+        Order::factory(20)->create();
     }
 }
