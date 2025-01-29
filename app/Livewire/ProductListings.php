@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Product;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -11,16 +12,21 @@ class ProductListings extends Component
 {
     use WithPagination;
 
+    #[Url(history: true, as: 'q')]
     public string $search = '';
+
 
     #[Computed]
     public function products()
     {
-        return Product::query()
-            ->where('name', 'like', '%'.$this->search.'%')
-            ->orWhere('description', 'like', '%'.$this->search.'%')
-            ->orWhere("sku", "like", '%'.$this->search.'%')
-            ->paginate(20);
+        $query = Product::query();
+        if ($this->search) {
+            $query->where('name', 'like', '%'.$this->search.'%')
+                ->orWhere('description', 'like', '%'.$this->search.'%')
+                ->orWhere("sku", "like", '%'.$this->search.'%');
+            $this->resetPage();
+        }
+        return $query->paginate(20);
     }
 
     public function render()
