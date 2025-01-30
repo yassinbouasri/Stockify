@@ -30,7 +30,7 @@ class ProductListings extends Component
             ;
             $this->resetPage();
         }
-        return $query->paginate(20);
+        return $query->with(['category'])->paginate(20);
     }
 
     public function render()
