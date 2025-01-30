@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('sku')->unique();
             $table->integer('price');
-            $table->integer('quantity');
             $table->string('description')->nullable();
             $table->string('image')->nullable();
             $table->timestamps();

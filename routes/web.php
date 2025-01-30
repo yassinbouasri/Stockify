@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\CreateProduct;
 use App\Livewire\ProductListings;
 use Illuminate\Support\Facades\Route;
 
@@ -18,5 +19,7 @@ Route::middleware([
     })->name('dashboard');
 
     Route::get('/products', ProductListings::class)->name('products');
-    
+
+    Route::get('/create-product', CreateProduct::class)->name('create-product');
+
 });
