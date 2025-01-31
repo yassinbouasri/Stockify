@@ -26,7 +26,7 @@
                 <td>{{ $product->category->name }}</td>
                 <td>{{ $product->sku }}</td>
                 <td>{{ str($product->description)->words(3) }}</td>
-                <td>
+                <td wire:poll.5s>
                     @forelse($product->stocks as $stock)
                         {{ $stock->quantity }}
                     @empty
