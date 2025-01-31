@@ -18,6 +18,7 @@ class ImagePreview extends Component
         $this->previewImageUrl = $url;
         $this->showImageModal = true;
     }
+
     public function closePreview()
     {
         $this->showImageModal = false;
