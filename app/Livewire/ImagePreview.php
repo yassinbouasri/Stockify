@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use Livewire\Attributes\On;
-use Livewire\Attributes\Reactive;
 use Livewire\Component;
 
 class ImagePreview extends Component

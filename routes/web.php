@@ -2,6 +2,7 @@
 
 use App\Livewire\CreateProduct;
 use App\Livewire\ProductListings;
+use App\Livewire\UpdateProduct;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,5 +22,7 @@ Route::middleware([
     Route::get('/products', ProductListings::class)->name('products');
 
     Route::get('/create-product', CreateProduct::class)->name('create-product');
+
+    Route::get('update-product/{product}', UpdateProduct::class)->name('update-product');
 
 });

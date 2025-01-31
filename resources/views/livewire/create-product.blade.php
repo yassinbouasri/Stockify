@@ -4,11 +4,12 @@
             <x-label class="p-1">Product Name:</x-label>
             <x-input class="w-1/4 p-1"
                      wire:model="form.name"
+                     autofocus
             />
         </div>
         <div class=" mx-4 my-4">
             <x-label class="p-1">Category:</x-label>
-            <select class="w-1/4 p-1" wire:model.defer="form.category_id">
+            <select class="w-1/4 p-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" wire:model.defer="form.category_id">
                 @foreach($this->categories as $category)
                     <option value="{{(int) $category->id}}">{{$category->name}}</option>
                 @endforeach
