@@ -1,7 +1,7 @@
 <div class="grid grid-cols-2 gap-8">
     <div>
-        <div class="mb-4 text-center text-xl">
-            <h3 class="dark:text-gray-300">Edit Product ID:({{ $this->form->id }})</h3>
+        <div class="mb-4 mt-4 text-xl text-right">
+            <h3 class="dark:text-gray-300 ">Edit Product ID:({{ $this->form->id }})</h3>
         </div>
         <form wire:submit="save">
             <div class=" mx-4 my-4">

@@ -28,6 +28,7 @@ class UpdateProduct extends Component
     {
         $this->form->update();
     }
+
     public function render()
     {
         return view('livewire.update-product');

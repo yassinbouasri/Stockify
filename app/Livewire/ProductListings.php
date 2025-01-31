@@ -40,6 +40,11 @@ class ProductListings extends Component
         $this->dispatch('preview-image', url: $imageUrl);
     }
 
+    public function delete(Product $product)
+    {
+        $product->delete();
+        $this->resetPage();
+    }
 
 
     public function render()
