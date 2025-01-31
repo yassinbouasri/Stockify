@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Product;
+use App\Models\Stock;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -15,11 +16,12 @@ class ProductListings extends Component
     #[Url(history: true, as: 'q')]
     public string $search = '';
 
+    public $stock;
 
     #[Computed]
     public function products()
     {
-        $query = Product::query();
+        $query = Product::query()->with(['category','stocks']);
         if ($this->search) {
             $query->where('name', 'like', '%'.$this->search.'%')
                 ->orWhere('description', 'like', '%'.$this->search.'%')
@@ -30,7 +32,7 @@ class ProductListings extends Component
             ;
             $this->resetPage();
         }
-        return $query->with(['category'])->paginate(20);
+        return $query->paginate(20);
     }
 
     public function render()
