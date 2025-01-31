@@ -1,6 +1,6 @@
 <div>
     @if($showImageModal)
-        <div  wire:click="closePreview" wire:transition class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div wire:transition.duration.600ms  wire:click="closePreview" class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
             <div class="dark:bg-gray-800 bg-white dark:text-gray-500 rounded-lg shadow-xl max-w-3xl w-full">
                 <!-- Modal Header -->
                 <div class="flex justify-between items-center p-4">
