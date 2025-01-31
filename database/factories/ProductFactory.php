@@ -23,7 +23,7 @@ class ProductFactory extends Factory
             'sku' => fake()->unique()->randomNumber(8),
             'price' => fake()->randomNumber(3),
             'description' => fake()->sentence,
-            'image' => "http://picsum.photos/seed/" . rand(0, 10000) . "/90",
+            'image' => "http://picsum.photos/seed/" . rand(0, 10000) . "/900",
         ];
     }
 }

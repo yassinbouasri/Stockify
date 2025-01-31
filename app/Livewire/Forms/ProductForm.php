@@ -16,7 +16,7 @@ class ProductForm extends Form
     public int $category_id;
     public $photo;
 
-    public $image;
+    public $image = '';
 
 
     public Product $product;
@@ -43,7 +43,7 @@ class ProductForm extends Form
         $this->validate();
 
         if ($this->photo) {
-            $this->image = $this->photo->storePublicly('products', ['disc', 'public']);
+            $this->image = $this->photo->store('products', 'public');
         }
 
         Product::create($this->only('name', 'sku', 'description', 'price', 'category_id', 'image'));

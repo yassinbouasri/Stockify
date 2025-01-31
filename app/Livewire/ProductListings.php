@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Product;
 use App\Models\Stock;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Reactive;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -15,8 +16,6 @@ class ProductListings extends Component
 
     #[Url(history: true, as: 'q')]
     public string $search = '';
-
-    public $stock;
 
     #[Computed]
     public function products()
@@ -34,6 +33,13 @@ class ProductListings extends Component
         }
         return $query->paginate(20);
     }
+
+
+    public function previewImage($imageUrl)
+    {
+        $this->dispatch('preview-image', url: $imageUrl);
+    }
+
 
     public function render()
     {
