@@ -49,6 +49,14 @@
                 />
             </div>
 
+            <div class=" mx-4 my-4">
+                <x-label wire:target="form.quantity" wire:dirty.class="text-orange-400 dark:text-orange-400" class="p-1 ">Quantity:<span wire:dirty wire:target="form.quantity">*</span></x-label>
+                <x-input class="w-1/2 p-1"
+                         wire:model="form.quantity"
+                         type="number"
+                />
+            </div>
+
             <x-validation-errors class="mx-4 my-4"/>
             <div class=" mx-4 my-4">
                 <x-button>Update</x-button>

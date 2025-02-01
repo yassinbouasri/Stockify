@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Livewire\Forms\ProductForm;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Stock;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -15,9 +16,9 @@ class UpdateProduct extends Component
 
     public ProductForm $form;
 
-    public function mount(Product $product)
+    public function mount(Product $product, Stock $stock)
     {
-        $this->form->setProducts($product);
+        $this->form->setProducts($product, $stock);
     }
     #[Computed]
     public function categories()

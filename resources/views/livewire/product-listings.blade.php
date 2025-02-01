@@ -16,6 +16,7 @@
             <th>Description</th>
             <th>Quantity</th>
             <th></th>
+            <th></th>
         </tr>
         </thead>
         <tbody class="text-gray-700 dark:text-gray-400">
@@ -26,40 +27,50 @@
                 <td>{{ $product->category->name }}</td>
                 <td>{{ $product->sku }}</td>
                 <td>{{ str($product->description)->words(3) }}</td>
-                <td wire:poll.5s>
-                    @forelse($product->stocks as $stock)
-                        {{ $stock->quantity }}
-                    @empty
+
+                <td
+                @forelse($product->stocks as $stock)
+                    <span wire:key="stock-{{ $stock->id }}">
+                        <livewire:stock-quantity
+                            :$stock
+                            wire:key="stock-quantity-{{ $stock->id}}"
+                        />
+                    </span>
+                @empty
+                    <span>
                         <p>0</p>
-                    @endforelse
-                </td>
-                <td class="flex gap-1">
-{{--                    <button wire:click="$dispatch('preview-image', { url: '{{ $product->image }}' })">--}}
+                        @endforelse
+                    </span>
+                    <td class="flex gap-1">
+                        {{--                    <button wire:click="$dispatch('preview-image', { url: '{{ $product->image }}' })">--}}
                         <button wire:click="previewImage('{{$product->image}}')">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                             stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/>
-                        </svg>
-                    </button>
-                    <a  href="{{ route('update-product', $product) }}" wire:navigate>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                        </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/>
+                            </svg>
+                        </button>
+                        <a href="{{ route('update-product', $product) }}" wire:navigate>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/>
+                            </svg>
 
-                    </a>
-                    <button
-                        wire:click.prevent="delete({{$product}})"
-                        wire:confirm="Are you sure you want to delete this product?"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                        </svg>
+                        </a>
+                        <button
+                            wire:click.prevent="delete({{$product}})"
+                            wire:confirm="Are you sure you want to delete this product?"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
+                            </svg>
 
 
-                    </button>
+                        </button>
 
-                </td>
+                    </td>
             </tr>
         @endforeach
 
