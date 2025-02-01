@@ -7,6 +7,7 @@ use App\Livewire\Forms\ProductForm;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Stock;
+use Laravel\Jetstream\InteractsWithBanner;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -14,6 +15,7 @@ use Livewire\WithFileUploads;
 class UpdateProduct extends Component
 {
     use WithFileUploads;
+    use InteractsWithBanner;
 
     public ProductForm $form;
 
@@ -29,6 +31,7 @@ class UpdateProduct extends Component
     public function save(UpdateStock $stock)
     {
         $this->form->update($stock);
+        $this->banner('Product updated successfully.');
     }
 
     public function render()

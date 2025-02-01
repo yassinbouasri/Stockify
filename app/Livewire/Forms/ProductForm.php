@@ -26,7 +26,14 @@ class ProductForm extends Form
 
     public function rules()
     {
-        return ['name' => 'required', 'sku' => 'required', 'description' => 'max:500', 'price' => 'required', 'category_id' => 'required', 'image' => 'nullable|max:1024',];
+        return [
+                'name' => 'required',
+                'sku' => 'required',
+                'description' => 'max:500',
+                'price' => 'required',
+                'category_id' => 'required',
+                'image' => 'nullable|max:1024',
+            ];
     }
 
     public function setProducts(Product $product)
@@ -40,15 +47,10 @@ class ProductForm extends Form
         $this->category_id = $product->category_id;
         $this->image = $product->image;
 
-
-
         foreach ($product->stocks as $stock) {
                 $this->stock = $stock;
                 $this->quantity = $stock->quantity;
-
         }
-
-
     }
 
     public function update(UpdateStock $stockUpdate)

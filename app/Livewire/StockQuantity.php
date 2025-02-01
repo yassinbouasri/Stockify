@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Actions\Stockify\UpdateStock;
+use App\Models\Product;
 use App\Models\Stock;
 use Laravel\Jetstream\InteractsWithBanner;
 use Livewire\Attributes\Validate;
@@ -12,7 +14,7 @@ class StockQuantity extends Component
     use InteractsWithBanner;
     public Stock $stock;
     #[Validate('integer|min:0')]
-    public int $quantity;
+    public int $quantity = 0;
 
     public function mount(Stock $stock)
     {
@@ -20,10 +22,10 @@ class StockQuantity extends Component
         $this->quantity = $stock->quantity;
     }
 
-    public function updateQuantity()
+    public function updateQuantity(UpdateStock $updateStock, Product $product)
     {
         $this->validate();
-        $this->stock->update(['quantity' => $this->quantity]);
+        $updateStock->saveStock($this->stock, $this->quantity, $product);
         $this->banner('Stock Quantity Updated Successfully!');
     }
     public function render()
