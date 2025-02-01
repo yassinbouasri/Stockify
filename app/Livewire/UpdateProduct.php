@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Actions\Stockify\UpdateStock;
 use App\Livewire\Forms\ProductForm;
 use App\Models\Category;
 use App\Models\Product;
@@ -16,18 +17,18 @@ class UpdateProduct extends Component
 
     public ProductForm $form;
 
-    public function mount(Product $product, Stock $stock)
+    public function mount(Product $product)
     {
-        $this->form->setProducts($product, $stock);
+        $this->form->setProducts($product);
     }
     #[Computed]
     public function categories()
     {
         return Category::all();
     }
-    public function save()
+    public function save(UpdateStock $stock)
     {
-        $this->form->update();
+        $this->form->update($stock);
     }
 
     public function render()
