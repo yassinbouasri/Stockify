@@ -5,6 +5,8 @@ namespace App\Livewire\Forms;
 use App\Actions\Stockify\UpdateStock;
 use App\Models\Product;
 use App\Models\Stock;
+use Illuminate\Database\Events\TransactionBeginning;
+use Illuminate\Support\Facades\DB;
 use Livewire\Form;
 
 class ProductForm extends Form
@@ -59,13 +61,16 @@ class ProductForm extends Form
         if ($this->photo) {
             $this->image = $this->photo->store('products', 'public');
         }
+        DB::transaction(function () use ($stockUpdate) {
 
-        $this->product->update($this->only(['name', 'sku', 'description', 'price', 'category_id', 'image']));
+            $this->product->update($this->only(['name', 'sku', 'description', 'price', 'category_id', 'image']));
 
-        $stockUpdate->saveStock($this->stock, $this->quantity, $this->product);
+            $stockUpdate->saveStock($this->stock, $this->quantity, $this->product);
+        });
+
     }
 
-    public function store()
+    public function store(UpdateStock $stockUpdate)
     {
         $this->validate();
 
@@ -73,7 +78,15 @@ class ProductForm extends Form
             $this->image = $this->photo->store('products', 'public');
         }
 
-        Product::create($this->only('name', 'sku', 'description', 'price', 'category_id', 'image'));
+
+        DB::transaction(function () use ($stockUpdate) {
+
+            $product = Product::create($this->only('name', 'sku', 'description', 'price', 'category_id', 'image'));
+
+            $stockUpdate->saveStock($this->stock, $this->quantity, $product);
+        });
+
+
     }
 
 

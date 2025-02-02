@@ -1,3 +1,4 @@
+
 <x-app-layout>
     <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -12,7 +13,7 @@
     <body>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Stock Products') }}
+            {{ $header ?? '' }}
         </h2>
     </x-slot>
 

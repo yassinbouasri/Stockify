@@ -69,7 +69,7 @@
         @if(!empty($form->photo))
             <img class="w-full max-w-sm rounded-lg shadow-md" src="{{ $form->photo->temporaryUrl() }}" alt="Product Image">
         @else
-            <img class="w-full max-w-sm rounded-lg shadow-md" src="{{ url($form->image) }}" alt="Product Image">
+            <img class="w-full max-w-sm rounded-lg shadow-md" src="{{ $form->image ?? '' }}" alt="Product Image">
         @endif
 
     </div>
