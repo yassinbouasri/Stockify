@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Actions\Stockify\UpdateStock;
 use App\Livewire\Forms\ProductForm;
 use App\Models\Category;
 use Laravel\Jetstream\InteractsWithBanner;
@@ -23,10 +24,10 @@ class CreateProduct extends Component
     {
         return Category::all();
     }
-    public function save()
+    public function save(UpdateStock $stock)
     {
 
-        $this->form->store();
+        $this->form->store($stock);
         $this->banner('Product created successfully');
         redirect()->route('products');
 
