@@ -28,6 +28,7 @@ class ProductListings extends Component
                 ->orWhereHas('category', function ($query) {
                     $query->where('name', 'like', '%'.$this->search.'%');
                 })
+                ->orderByDesc('name')
             ;
             $this->resetPage();
         }
