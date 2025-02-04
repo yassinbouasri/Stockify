@@ -18,8 +18,5 @@ class Stock extends Model
         return $this->belongsTo(Product::class);
     }
 
-//    public static function createOrUpdate():self
-//    {
-//        $this->find();
-//    }
+
 }

@@ -9,19 +9,29 @@ use Livewire\Component;
 class SearchCustomer extends Component
 {
     public string $search = "";
+    public bool $show = true;
+
+    public function getEmail(int $id)
+    {
+        $this->show = false;
+        foreach ($this->customers($id) as $customer) {
+                $this->search = $customer->email;
+        }
+    }
 
     #[Computed]
-    public function customers()
+    public function customers(?int $id = null)
     {
+
         if ($this->search == '') {
             return [];
         }
-        return Customer::search($this->search)->options(['name', 'email'])->get();
+        $customers = Customer::search($this->search)->options(['name', 'email']);
+        if ($id != null) {
 
-//        return Customer::where('email', 'like', $this->search.'%')
-//            ->orWhere('phone', 'like', $this->search.'%')
-//            ->orWhere('name', 'like', $this->search.'%')
-//            ->orWhere('address', 'like', $this->search.'%')->get();
+            $customers->where('id', $id);
+        }
+        return $customers->get();
     }
 
     public function render()

@@ -7,11 +7,14 @@
         />
 
     </div>
-    @if($this->customers)
+
+    @if($this->customers && $this->show)
+
+
     <div class="mt-4 p-7 absolute border border-indigo-700 rounded-lg dark:bg-gray-700 max-h-96 overflow-y-auto">
 
             @foreach($this->customers as $customer)
-                {{ $customer->name }} <br/>
+            <a wire:click="getEmail({{ $customer->id }})" href="#" class="dark:text-gray-300">{{ $customer->name . '-' . $customer->email . '-' . $customer->phone }} </a><br/>
             @endforeach
 
     </div>
