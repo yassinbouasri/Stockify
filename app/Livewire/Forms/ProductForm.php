@@ -78,16 +78,12 @@ class ProductForm extends Form
             $this->image = $this->photo->store('products', 'public');
         }
 
-
         DB::transaction(function () use ($stockUpdate) {
 
             $product = Product::create($this->only('name', 'sku', 'description', 'price', 'category_id', 'image'));
+            $product->stocks()->save();
 
             $stockUpdate->saveStock($this->stock, $this->quantity, $product);
         });
-
-
     }
-
-
 }

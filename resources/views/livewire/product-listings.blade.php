@@ -7,15 +7,14 @@
     </div>
 
     <table class="table-auto w-full max-w-6xl mx-auto my-3">
-        <thead class="bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-400 shadow ">
-        <tr class="text-left">
+        <thead class="bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-400 shadow text-left" style="text-align: left !important;">
+        <tr class="">
             <th>Name</th>
             <th>Price</th>
             <th>Category</th>
             <th>SKU</th>
             <th>Description</th>
             <th>Quantity</th>
-            <th></th>
             <th></th>
         </tr>
         </thead>
