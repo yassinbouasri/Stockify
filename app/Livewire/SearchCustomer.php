@@ -13,9 +13,16 @@ class SearchCustomer extends Component
     public string $search = "";
     public bool $show = false;
 
+
     public function updatedSearch()
     {
         $this->customers();
+    }
+
+    #[On('search:clear-results')]
+    public function clear()
+    {
+        $this->show = false;
     }
 
     public function selectCustomer(int $id)
