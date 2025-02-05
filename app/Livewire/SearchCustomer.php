@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Customer;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Reactive;
 use Livewire\Component;
 
@@ -11,6 +12,11 @@ class SearchCustomer extends Component
 {
     public string $search = "";
     public bool $show = false;
+
+    public function updatedSearch()
+    {
+        $this->customers();
+    }
 
     public function selectCustomer(int $id)
     {
@@ -21,6 +27,7 @@ class SearchCustomer extends Component
         }
     }
 
+
     #[Computed]
     public function customers()
     {
@@ -28,6 +35,7 @@ class SearchCustomer extends Component
             return collect();
         }
 
+        $this->show = true;
         return Customer::search($this->search)->options(['name', 'email'])->get();
     }
 

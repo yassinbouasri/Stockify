@@ -9,7 +9,7 @@
 
     </div>
 
-    @if($this->show && $this->customers)
+    @if($this->show)
 
         <div
             class="mt-4 p-7 absolute border border-indigo-700 rounded-lg dark:bg-gray-700 max-h-96 overflow-y-auto shadow-lg"
@@ -19,7 +19,7 @@
                 <a
                     wire:click="selectCustomer({{ $customer->id }})"
                    href="#"
-                   class="dark:text-gray-300 hover:bg-gray-100 hover:bg-gray-200 dark:hover:bg-gray-600">
+                   class="dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 ">
                     {{ $customer->name . '-' . $customer->email . '-' . $customer->phone }}
                 </a>
                 <br/>

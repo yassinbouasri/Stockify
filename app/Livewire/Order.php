@@ -4,15 +4,26 @@ namespace App\Livewire;
 
 use App\Enums\PaymentMethod;
 use App\Enums\Status;
+use App\Livewire\Forms\OrderForm;
 use Livewire\Component;
 
-class Orders extends Component
+class Order extends Component
 {
     public $paymentMethod;
+    public OrderForm $form;
+
+
 
     public function mount()
     {
         $this->paymentMethod = PaymentMethod::cases();
+    }
+
+    public function store()
+    {
+
+        $this->form->save();
+
     }
     public function render()
     {

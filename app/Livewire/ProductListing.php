@@ -10,7 +10,7 @@ use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class ProductListings extends Component
+class ProductListing extends Component
 {
     use WithPagination;
 
