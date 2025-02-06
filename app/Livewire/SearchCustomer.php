@@ -4,14 +4,18 @@ namespace App\Livewire;
 
 use App\Models\Customer;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Modelable;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Reactive;
 use Livewire\Component;
 
 class SearchCustomer extends Component
 {
-    public string $search = "";
+    public $search;
+
     public bool $show = false;
+
+    public Customer $customer;
 
 
     public function updatedSearch()
@@ -25,11 +29,15 @@ class SearchCustomer extends Component
         $this->show = false;
     }
 
+
+    #[On('search:get-customer')]
     public function selectCustomer(int $id)
     {
-        $customer = Customer::find($id);
-        if ($customer) {
-            $this->search = $customer->email;
+        $this->customer = Customer::find($id);
+        $this->dispatch('selectedCustomer', $this->customer);
+
+        if ($this->customer) {
+            $this->search = $this->customer->email;
             $this->show = false;
         }
     }

@@ -2,8 +2,10 @@
     <x-slot:header>Orders Management</x-slot:header>
 
     <form wire:submit="store" class="mt-4 mb-4" wire:click="$dispatch('search:clear-results')">
-{{--        <livewire:customer-search/>--}}
+
         <livewire:search-customer  />
+
+
         <div class=" mx-4 my-4" >
             <x-label class="p-1">Invoice Number:</x-label>
             <x-input type="search" class="w-1/2 p-1"

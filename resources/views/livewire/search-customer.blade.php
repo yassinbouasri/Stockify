@@ -21,7 +21,7 @@
 
                     wire:click="selectCustomer({{ $customer->id }})"
                    href="#"
-                   class="dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 ">
+                   class="dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 font-bold">
                     {{ $customer->name . ' || ' . $customer->email . ' || ' . $customer->phone }}
                 </a>
                 <br/>
