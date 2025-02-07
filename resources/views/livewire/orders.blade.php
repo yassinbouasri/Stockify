@@ -1,18 +1,20 @@
+@php use App\Enums\Status; @endphp
+@php use App\Enums\PaymentMethod; @endphp
 <div>
     <x-slot:header>Orders Management</x-slot:header>
 
     <form wire:submit="store" class="mt-4 mb-4" wire:click="$dispatch('search:clear-results')">
 
-        <div class=" mx-4 my-4" >
+        <div class=" mx-4 my-4">
 
-            <livewire:select-products-modal />
+            <livewire:select-products-modal/>
 
         </div>
 
-        <livewire:search-customer  />
+        <livewire:search-customer/>
 
 
-        <div class=" mx-4 my-4" >
+        <div class=" mx-4 my-4">
             <x-label class="p-1">Invoice Number:</x-label>
             <x-input type="text" class="w-1/2 p-1"
                      wire:model="form.invoice_number"
@@ -38,7 +40,7 @@
                 <option>Select A Status...</option>
                 @foreach($ordersStatus as $status)
                     <option
-                        value="{{ \App\Enums\Status::tryFrom($status->value) }}"> {{ ucfirst($status->value) }}</option>
+                        value="{{ Status::tryFrom($status->value) }}"> {{ ucfirst($status->value) }}</option>
                 @endforeach
             </select>
 
@@ -51,7 +53,8 @@
                 <option>Select A Payment Method...</option>
 
                 @foreach($this->paymentMethod as $payment)
-                    <option value="{{ \App\Enums\PaymentMethod::from($payment->value) }}"> {{ ucfirst($payment->value) }}</option>
+                    <option
+                        value="{{ PaymentMethod::from($payment->value) }}"> {{ ucfirst($payment->value) }}</option>
                 @endforeach
             </select>
 

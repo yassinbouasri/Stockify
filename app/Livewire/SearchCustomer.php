@@ -4,9 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Customer;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\Modelable;
 use Livewire\Attributes\On;
-use Livewire\Attributes\Reactive;
 use Livewire\Component;
 
 class SearchCustomer extends Component

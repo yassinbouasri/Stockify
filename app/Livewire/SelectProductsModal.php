@@ -3,18 +3,24 @@
 namespace App\Livewire;
 
 use App\Models\Product;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class SelectProductsModal extends Component
 {
     public $show = false;
-    public $search = '';
+    public $searchProduct = '';
 
     public Product $product;
 
-    public function selectProduct()
+    #[Computed]
+    public function searchedProducts()
     {
+        if(empty($this->search)){
+            return collect();
+        }
 
+        return Product::search($this->search)->options(['name', 'sku'])->get();
     }
 
 

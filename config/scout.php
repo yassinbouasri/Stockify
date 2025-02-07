@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Customer;
+use App\Models\Product;
 
 return [
 
@@ -197,6 +198,32 @@ return [
                         ],
                         [
                             'name' => 'email',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'created_at',
+                            'type' => 'int64',
+                        ],
+                    ],
+                    'default_sorting_field' => 'created_at',
+                ],
+                'search-parameters' => [
+                    'query_by' => 'name'
+                ],
+            ],
+            Product::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => 'id' ,
+                            'type' => 'string'
+                        ],
+                        [
+                            'name' => 'name',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'sku',
                             'type' => 'string',
                         ],
                         [
