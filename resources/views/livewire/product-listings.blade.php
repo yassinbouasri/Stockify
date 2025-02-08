@@ -58,7 +58,7 @@
 
                         </a>
                         <button
-                            wire:click.prevent="delete({{$product}})"
+                            wire:click.prevent="delete({{$product->id}})"
                             wire:confirm="Are you sure you want to delete this product?"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

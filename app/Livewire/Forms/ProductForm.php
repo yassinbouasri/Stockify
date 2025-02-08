@@ -3,11 +3,13 @@
 namespace App\Livewire\Forms;
 
 use App\Actions\Stockify\UpdateStock;
+use App\Casts\MoneyCast;
 use App\Models\Product;
 use App\Models\Stock;
 use Illuminate\Database\Events\TransactionBeginning;
 use Illuminate\Support\Facades\DB;
 use Livewire\Form;
+use Money\Money;
 
 class ProductForm extends Form
 {
@@ -16,7 +18,7 @@ class ProductForm extends Form
     public string $name = '';
     public string $sku = '';
     public string $description = '';
-    public float $price = 0.0;
+    public string $price = '';
     public int $category_id;
     public $photo = null;
     public ?string $image = null;
@@ -45,7 +47,7 @@ class ProductForm extends Form
         $this->name = $product->name;
         $this->sku = $product->sku;
         $this->description = $product->description;
-        $this->price = $product->price;
+        $this->price = ($product->price->getAmount() / 100) ;
         $this->category_id = $product->category_id;
         $this->image = $product->image;
 
@@ -61,11 +63,15 @@ class ProductForm extends Form
         if ($this->photo) {
             $this->image = $this->photo->store('products', 'public');
         }
+
+        $this->price = (int) ($this->price * 100);
+
         DB::transaction(function () use ($stockUpdate) {
 
             $this->product->update($this->only(['name', 'sku', 'description', 'price', 'category_id', 'image']));
 
             $stockUpdate->saveStock($this->stock, $this->quantity, $this->product);
+
         });
 
     }
@@ -78,10 +84,11 @@ class ProductForm extends Form
             $this->image = $this->photo->store('products', 'public');
         }
 
+        $this->price = (int) ($this->price * 100);
+
         DB::transaction(function () use ($stockUpdate) {
 
             $product = Product::create($this->only('name', 'sku', 'description', 'price', 'category_id', 'image'));
-            $product->stocks()->save();
 
             $stockUpdate->saveStock($this->stock, $this->quantity, $product);
         });

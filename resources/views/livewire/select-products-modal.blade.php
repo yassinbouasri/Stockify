@@ -50,6 +50,7 @@
             <table class="table-auto w-full max-w-6xl mx-auto my-3">
                 <thead class="bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-400 shadow text-left" style="text-align: left !important;">
                 <tr class="">
+                    <th></th>
                     <th>Name</th>
                     <th>Price</th>
                     <th>Category</th>
@@ -62,8 +63,9 @@
                 <tbody class="text-gray-700 dark:text-gray-400">
                 @foreach($this->searchedProducts as $product)
 
-                    <tr class="border-b dark:border-gray-600 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <td><a wire:click="selectedProduct({{ $product->id }})" href="#">{{ $product->name }}</a></td>
+                    <tr wire:click="selectedProduct({{ $product->id }})" class="cursor-pointer border-b dark:border-gray-600 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <td ><x-checkbox class="mx-1 my-1 mr-2"></x-checkbox></td>
+                        <td>{{ $product->name }}</td>
                         <td>{{ $product->price }}</td>
                         <td>{{ $product->category->name }}</td>
                         <td>{{ $product->sku }}</td>
@@ -101,7 +103,7 @@
 
                                 </a>
                                 <button
-                                    wire:click.prevent="delete({{$product}})"
+                                    wire:click.prevent="delete({{$product->id}})"
                                     wire:confirm="Are you sure you want to delete this product?"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -123,7 +125,7 @@
 
 
                 <div class="mx-3 my-3 mt-4 mb-4">
-                    {{ $this->searchedProducts->links() }}
+                    {{ $this->searchedProducts->onEachSide(1)->links() }}
                 </div>
 
 
