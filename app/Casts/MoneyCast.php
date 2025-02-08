@@ -26,6 +26,7 @@ class MoneyCast implements CastsAttributes
      */
     public function set(Model $model, string $key, mixed $value, array $attributes): mixed
     {
+
         return $value;
     }
 }

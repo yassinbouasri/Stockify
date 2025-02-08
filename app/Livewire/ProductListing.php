@@ -27,12 +27,10 @@ class ProductListing extends Component
                 ->orWhere("sku", "like", '%'.$this->search.'%')
                 ->orWhereHas('category', function ($query) {
                     $query->where('name', 'like', '%'.$this->search.'%');
-                })
-                ->orderByDesc('name')
-            ;
+                });
             $this->resetPage();
         }
-        return $query->paginate(20);
+        return $query->orderByDesc('created_at')->paginate(20);
     }
 
 

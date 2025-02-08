@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\MoneyCast;
 use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,7 +21,7 @@ class Product extends Model
     use Searchable;
 
     protected $casts = [
-        'price' => Money::class,
+        'price' => MoneyCast::class,
     ];
 
     public function price(): Attribute
