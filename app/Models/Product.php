@@ -3,18 +3,34 @@
 namespace App\Models;
 
 use Database\Factories\ProductFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Scout\Searchable;
+use Money\Currency;
+use Money\Money;
 
 class Product extends Model
 {
     /** @use HasFactory<ProductFactory> */
     use HasFactory;
     use Searchable;
+
+    protected $casts = [
+        'price' => Money::class,
+    ];
+
+    public function price(): Attribute
+    {
+        return Attribute::make(
+            get: function (int $value) {
+                return new Money($value, new Currency('USD'));
+            }
+        );
+    }
 
     public function category(): BelongsTo
     {

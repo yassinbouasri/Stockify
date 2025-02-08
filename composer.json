@@ -12,6 +12,7 @@
         "php": "^8.2",
         "algolia/algoliasearch-client-php": "^4.13",
         "http-interop/http-factory-guzzle": "^1.2",
+        "laravel/cashier-paddle": "^2.5",
         "laravel/framework": "^11.31",
         "laravel/jetstream": "^5.3",
         "laravel/sanctum": "^4.0",
@@ -19,6 +20,7 @@
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.0",
         "meilisearch/meilisearch-php": "^1.12",
+        "moneyphp/money": "^4.6",
         "typesense/typesense-php": "^4.9"
     },
     "require-dev": {

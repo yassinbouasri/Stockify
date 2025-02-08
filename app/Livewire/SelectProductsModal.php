@@ -31,7 +31,7 @@ class SelectProductsModal extends Component
 
         return Product::search($query)
             ->query(fn(Builder $builder) => $builder->with(['category', 'stocks']))
-            ->paginate(10);
+            ->paginate();
     }
 
     public function selectedProduct(int $id)
