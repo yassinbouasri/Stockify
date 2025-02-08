@@ -1,8 +1,8 @@
 <?php
 
 use App\Livewire\CreateProduct;
-use App\Livewire\Orders;
-use App\Livewire\ProductListings;
+use App\Livewire\Order;
+use App\Livewire\ProductListing;
 use App\Livewire\UpdateProduct;
 use Illuminate\Support\Facades\Route;
 
@@ -20,10 +20,10 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('/products', ProductListings::class)->name('products');
+    Route::get('/products', ProductListing::class)->name('products');
     Route::get('/create-product', CreateProduct::class)->name('create-product');
     Route::get('update-product/{product}', UpdateProduct::class)->name('update-product');
 
-    Route::get('/orders', Orders::class)->name('orders');
+    Route::get('/orders', Order::class)->name('orders');
 
 });

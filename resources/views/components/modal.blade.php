@@ -14,7 +14,7 @@ $maxWidth = [
 
 <div
     x-data="{ show: @entangle($attributes->wire('model')) }"
-    x-on:close.stop="show = false"
+    x-on:close.stop="show"
     x-on:keydown.escape.window="show = false"
     x-show="show"
     id="{{ $id }}"

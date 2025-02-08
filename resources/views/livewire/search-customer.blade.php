@@ -9,22 +9,16 @@
 
     </div>
 
-    @if($this->show && $this->customers)
+    <x-search-results-section>
+        @foreach($this->customers as $customer)
+            <a
 
-        <div
-            class="mt-4 p-7 absolute border border-indigo-700 rounded-lg dark:bg-gray-700 max-h-96 overflow-y-auto shadow-lg"
-        >
-
-            @foreach($this->customers as $customer)
-                <a
-                    wire:click="selectCustomer({{ $customer->id }})"
-                   href="#"
-                   class="dark:text-gray-300 hover:bg-gray-100 hover:bg-gray-200 dark:hover:bg-gray-600">
-                    {{ $customer->name . '-' . $customer->email . '-' . $customer->phone }}
-                </a>
-                <br/>
-            @endforeach
-
-        </div>
-    @endif
+                wire:click="selectCustomer({{ $customer->id }})"
+                href="#"
+                class="dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 font-bold">
+                {{ $customer->name . ' || ' . $customer->email . ' || ' . $customer->phone }}
+            </a>
+            <br/>
+        @endforeach
+    </x-search-results-section>
 </div>
