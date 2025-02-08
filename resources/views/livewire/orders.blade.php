@@ -3,13 +3,13 @@
 <div>
     <x-slot:header>Orders Management</x-slot:header>
 
-    <form wire:submit="store" class="mt-4 mb-4" wire:click="$dispatch('search:clear-results')">
 
         <div class=" mx-4 my-4">
 
             <livewire:select-products-modal/>
 
         </div>
+    <form wire:submit="store" class="mt-4 mb-4" wire:click="$dispatch('search:clear-results')">
 
         <livewire:search-customer/>
 

@@ -31,7 +31,6 @@ class Order extends Component
 
     public function store()
     {
-//        dd($this->form->status, $this->form->payment_method);
         $this->form->save();
     }
     public function render()

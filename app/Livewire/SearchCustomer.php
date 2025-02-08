@@ -11,7 +11,7 @@ class SearchCustomer extends Component
 {
     public $search;
 
-    public bool $show = false;
+    public bool $showSection = false;
 
     public Customer $customer;
 
@@ -24,7 +24,7 @@ class SearchCustomer extends Component
     #[On('search:clear-results')]
     public function clear()
     {
-        $this->show = false;
+        $this->showSection = false;
     }
 
 
@@ -36,7 +36,7 @@ class SearchCustomer extends Component
 
         if ($this->customer) {
             $this->search = $this->customer->email;
-            $this->show = false;
+            $this->showSection = false;
         }
     }
 
@@ -48,7 +48,7 @@ class SearchCustomer extends Component
             return collect();
         }
 
-        $this->show = true;
+        $this->showSection = true;
         return Customer::search($this->search)->options(['name', 'email'])->get();
     }
 
