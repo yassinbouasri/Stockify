@@ -55,4 +55,5 @@ class Product extends Model
             'created_at' => $this->created_at->timestamp,
         ]);
     }
+
 }

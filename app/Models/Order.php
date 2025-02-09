@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\MoneyCast;
 use App\Enums\PaymentMethod;
 use App\Enums\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,6 +19,7 @@ class Order extends Model
     protected $casts = [
         'payment_method' => PaymentMethod::class,
         'status' => Status::class,
+        'total_price' => MoneyCast::class,
     ];
 
     public function customer(): BelongsTo
@@ -29,5 +31,6 @@ class Order extends Model
     {
         return $this->belongsToMany(Product::class, 'order_product');
     }
+
 
 }

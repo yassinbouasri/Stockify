@@ -47,11 +47,7 @@ class SelectProductsModal extends Component
         $this->dispatch('selectedProducts', $this->selectedProducts);
     }
 
-    public function selectProduct()
-    {
 
-        return $this->selectedProducts;
-    }
 
 
     public function openModal()
