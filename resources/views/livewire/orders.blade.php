@@ -26,14 +26,6 @@
             </div>
 
             <div class=" mx-4 my-4">
-                <x-label class="p-1">Total Price:</x-label>
-                <x-input type="number" class="w-full p-1"
-                         wire:model.live="form.total_price"
-                         placeholder="Sub Total"
-                />
-
-            </div>
-            <div class=" mx-4 my-4">
                 <x-label class="p-1">Status:</x-label>
                 <select
                     wire:model="form.status"

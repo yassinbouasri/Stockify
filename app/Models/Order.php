@@ -5,11 +5,14 @@ namespace App\Models;
 use App\Casts\MoneyCast;
 use App\Enums\PaymentMethod;
 use App\Enums\Status;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Money\Currency;
+use Money\Money;
 
 class Order extends Model
 {
@@ -30,6 +33,15 @@ class Order extends Model
     public function products(): belongsToMany
     {
         return $this->belongsToMany(Product::class, 'order_product');
+    }
+
+    public function totalPrice(): Attribute
+    {
+        return Attribute::make(
+            get: function (int $value) {
+                return new Money($value, new Currency('USD'));
+            }
+        );
     }
 
 

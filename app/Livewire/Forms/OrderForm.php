@@ -17,7 +17,7 @@ class OrderForm extends Form
     public $customer_id = 1;
     #[Validate('required')]
     public $invoice_number;
-    #[Validate('required|numeric')]
+
     public $total_price;
 
     #[Validate(['required', (new Enum(Status::class))])]
@@ -28,29 +28,43 @@ class OrderForm extends Form
     public int $quantity = 2;
 
 
-
     public function save($productId)
     {
         $this->validate();
 
         DB::transaction(function () use ($productId) {
 
-            $products = Product::find(array_keys($productId));
+            $products = Product::find($productId);
+
+            $this->setTotalPrice($products);
 
             $order = Order::firstOrCreate($this->only(['customer_id', 'invoice_number', 'total_price', 'status', 'payment_method']));
 
             foreach ($products as $product) {
 
 
-                $this->total_price = ($product->price->getAmount() * $this->quantity);;
+                $totalAmount = ($product->price->getAmount() * $this->quantity);
 
-                $order->products()->attach($product, ['quantity' => $this->quantity, 'total_amount' => $this->total_price]);
+
+                $order->products()->attach($product, ['quantity' => $this->quantity, 'total_amount' => $totalAmount]);
 
             }
 
         });
 
 
+    }
+
+    /**
+     * @param $products
+     * @return void
+     */
+    private function setTotalPrice($products): void
+    {
+        foreach ($products as $product) {
+
+            $this->total_price += $product->price->getAmount() * $this->quantity;
+        }
     }
 
 }
