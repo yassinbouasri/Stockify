@@ -16,7 +16,7 @@ class SelectProductsModal extends Component
     public bool $selected = false;
 
 
-    public array $selectedProducts;
+    public array $selectedProducts = [];
 
     public Product $product;
 
@@ -43,6 +43,12 @@ class SelectProductsModal extends Component
     {
         $this->selectedProducts[$product] =  !($this->selectedProducts[$product] ?? false);
         $this->dispatch('selectedProducts', array_keys(array_filter($this->selectedProducts)));
+    }
+
+    #[Computed]
+    public function selectedCount()
+    {
+        return count(array_keys(array_filter($this->selectedProducts))) ?? 0;
     }
 
 

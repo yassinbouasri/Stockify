@@ -8,7 +8,7 @@
         <div class="dark:bg-gray-800 bg-white mx-4 my-4">
             <div class="flex justify-between mt-2 mb-4">
                 <x-input wire:model.live.debounce="query" autofocus type="search" placeholder="Search..."/>
-                <x-label>({{ $this->selectedCountProperty ?? 0 }})</x-label>
+                <x-label >({{ $this->selectedCount }})</x-label>
             </div>
 
             <table class="table-auto w-full max-w-6xl mx-auto my-3">
@@ -98,9 +98,6 @@
 
 
 
-        </div>
-        <div class="mx-3 my-3 mt-4 mb-4">
-            <x-secondary-button wire:click="selectProduct">Select Product</x-secondary-button>
         </div>
 
     </x-modal>

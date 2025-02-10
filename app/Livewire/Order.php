@@ -39,12 +39,10 @@ class Order extends Component
     public function mount()
     {
         $this->paymentMethod = PaymentMethod::cases();
-//        $this->form->total_price = 1;
     }
 
     public function store()
     {
-        dd(array_keys($this->products, true), $this->products);
         $this->form->save($this->products);
         $this->banner('Order placed');
     }
