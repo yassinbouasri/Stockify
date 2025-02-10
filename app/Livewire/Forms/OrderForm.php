@@ -27,25 +27,24 @@ class OrderForm extends Form
 
     public int $quantity = 2;
 
+
+
     public function save($productId)
     {
-//        $this->validate();
+        $this->validate();
 
         DB::transaction(function () use ($productId) {
 
-
             $products = Product::find(array_keys($productId));
-            $order = Order::firstOrCreate($this->only(['customer_id', 'invoice_number', 'total_price', 'status', 'payment_method']));
 
+            $order = Order::firstOrCreate($this->only(['customer_id', 'invoice_number', 'total_price', 'status', 'payment_method']));
 
             foreach ($products as $product) {
 
 
-                $totalAmount = ($product->price->getAmount() * $this->quantity);
+                $this->total_price = ($product->price->getAmount() * $this->quantity);;
 
-
-
-                $order->products()->attach($product, ['quantity' => $this->quantity , 'total_amount' => $totalAmount]);
+                $order->products()->attach($product, ['quantity' => $this->quantity, 'total_amount' => $this->total_price]);
 
             }
 

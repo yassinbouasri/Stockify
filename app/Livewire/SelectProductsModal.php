@@ -4,12 +4,9 @@ namespace App\Livewire;
 
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
-use PhpParser\Node\Expr\Array_;
 
 class SelectProductsModal extends Component
 {
@@ -17,6 +14,7 @@ class SelectProductsModal extends Component
     public bool $show = false;
     public string $query = '';
     public bool $selected = false;
+
 
     public array $selectedProducts;
 
@@ -44,10 +42,8 @@ class SelectProductsModal extends Component
     public function toggleProduct(int $product)
     {
         $this->selectedProducts[$product] =  !($this->selectedProducts[$product] ?? false);
-        $this->dispatch('selectedProducts', $this->selectedProducts);
+        $this->dispatch('selectedProducts', array_keys(array_filter($this->selectedProducts)));
     }
-
-
 
 
     public function openModal()

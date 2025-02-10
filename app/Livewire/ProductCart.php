@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Product;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class ProductCart extends Component
@@ -18,9 +19,10 @@ class ProductCart extends Component
         $this->products = $products;
     }
 
-    public function getProductListProperty()
+    #[Computed]
+    public function productList()
     {
-        return Product::find(array_keys($this->products));
+        return Product::find($this->products);
     }
     public function render()
     {
