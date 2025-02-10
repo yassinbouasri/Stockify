@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Customer;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Reactive;
 use Livewire\Component;
 
 class SearchCustomer extends Component
@@ -26,7 +27,6 @@ class SearchCustomer extends Component
     {
         $this->showSection = false;
     }
-
 
     #[On('search:get-customer')]
     public function selectCustomer(int $id)

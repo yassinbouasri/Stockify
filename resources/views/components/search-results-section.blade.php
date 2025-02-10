@@ -1,5 +1,4 @@
 <div>
-    @if($this->showSection)
 
         <div
             wire:transition.100ms
@@ -9,5 +8,4 @@
             {{ $slot }}
 
         </div>
-    @endif
 </div>

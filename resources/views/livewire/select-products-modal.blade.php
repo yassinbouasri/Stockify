@@ -5,46 +5,10 @@
         </button>
     </x-label>
     <x-modal wire:model="show">
-{{--        <form wire:submit="">--}}
-{{--            <div class=" mx-4 my-4">--}}
-{{--                <x-label class="p-1">Product:</x-label>--}}
-{{--                <x-input type="search" class="w-1/2 p-1"--}}
-{{--                         wire:model.live="query"--}}
-{{--                         placeholder="Type A Name Or sku.."--}}
-{{--                />--}}
-
-{{--            </div>--}}
-{{--            <div>--}}
-
-{{--                <x-search-results-section>--}}
-{{--                    @foreach($this->searchedProducts as $product)--}}
-{{--                        <a--}}
-
-{{--                            wire:click="selectProduct({{ $product->id }})"--}}
-{{--                            href="#"--}}
-{{--                            class="dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 font-bold">--}}
-{{--                            {{ $product->name . ' || ' . $product->sku  .'|' .$product->id }}--}}
-{{--                        </a>--}}
-{{--                        <br/>--}}
-{{--                    @endforeach--}}
-{{--                </x-search-results-section>--}}
-{{--            </div>--}}
-{{--            <div class=" mx-4 my-4">--}}
-{{--                <x-label class="p-1">Quantity:</x-label>--}}
-{{--                <x-input type="number" class="w-1/2 p-1"--}}
-{{--                         wire:model.live="quantity"--}}
-{{--                         placeholder="Type A Name Or sku.."--}}
-{{--                />--}}
-
-{{--            </div>--}}
-
-{{--            <div class=" mx-4 my-4">--}}
-{{--                <x-button>Select Product</x-button>--}}
-{{--            </div>--}}
-{{--        </form>--}}
         <div class="dark:bg-gray-800 bg-white mx-4 my-4">
             <div class="flex justify-between mt-2 mb-4">
                 <x-input wire:model.live.debounce="query" autofocus type="search" placeholder="Search..."/>
+                <x-label >({{ $this->selectedCount }})</x-label>
             </div>
 
             <table class="table-auto w-full max-w-6xl mx-auto my-3">
@@ -56,15 +20,19 @@
                     <th>Category</th>
                     <th>SKU</th>
                     <th>Description</th>
-                    <th>Quantity</th>
+                    <th>Stk.</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody class="text-gray-700 dark:text-gray-400">
                 @foreach($this->searchedProducts as $product)
 
-                    <tr wire:click="selectedProduct({{ $product->id }})" class="cursor-pointer border-b dark:border-gray-600 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <td ><x-checkbox class="mx-1 my-1 mr-2"></x-checkbox></td>
+                    <tr
+                        wire:key="product-{{ $product->id }}"
+                        wire:click.prevent="toggleProduct({{ $product->id }})"
+                        class="cursor-pointer border-b dark:border-gray-600 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                        <td ><x-checkbox wire:model="selectedProducts.{{ $product->id }}"  class="mx-1 my-1 mr-2"></x-checkbox></td>
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->price }}</td>
                         <td>{{ $product->category->name }}</td>

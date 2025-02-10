@@ -13,6 +13,10 @@ class SelectProductsModal extends Component
     use WithPagination;
     public bool $show = false;
     public string $query = '';
+    public bool $selected = false;
+
+
+    public array $selectedProducts = [];
 
     public Product $product;
 
@@ -31,14 +35,20 @@ class SelectProductsModal extends Component
 
         return Product::search($query)
             ->query(fn(Builder $builder) => $builder->with(['category', 'stocks']))
+            ->orderByDesc('created_at')
             ->paginate();
     }
 
-    public function selectedProduct(int $id)
+    public function toggleProduct(int $product)
     {
+        $this->selectedProducts[$product] =  !($this->selectedProducts[$product] ?? false);
+        $this->dispatch('selectedProducts', array_keys(array_filter($this->selectedProducts)));
+    }
 
-        $this->product = Product::find($id);
-        $this->query = $this->product->name;
+    #[Computed]
+    public function selectedCount()
+    {
+        return count(array_keys(array_filter($this->selectedProducts))) ?? 0;
     }
 
 
