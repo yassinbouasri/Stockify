@@ -20,9 +20,11 @@ class SelectProductsModal extends Component
 
     public Product $product;
 
+
     public function updatedQuery()
     {
         $this->searchedProducts();
+        $this->resetPage();
     }
 
     #[Computed]
@@ -36,7 +38,7 @@ class SelectProductsModal extends Component
         return Product::search($query)
             ->query(fn(Builder $builder) => $builder->with(['category', 'stocks']))
             ->orderByDesc('created_at')
-            ->paginate();
+            ->paginate(15);
     }
 
     public function toggleProduct(int $product)
