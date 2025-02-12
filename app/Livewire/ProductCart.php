@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Product;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Modelable;
 use Livewire\Component;
 
 class ProductCart extends Component
@@ -14,9 +15,15 @@ class ProductCart extends Component
 
     public array $products = [];
 
+    #[Modelable]
+    public array $quantities = [];
+
+
+
     public function selectedProducts(array $products)
     {
         $this->products = $products;
+
     }
 
     #[Computed]

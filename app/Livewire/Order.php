@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Actions\Stockify\DecrementProductStockQuantity;
 use App\Enums\PaymentMethod;
 use App\Enums\Status;
 use App\Livewire\Forms\OrderForm;
@@ -26,6 +27,8 @@ class Order extends Component
 
     public array $products = [];
 
+    public ?array $quantities = [];
+
     public function selectedProducts(array $products)
     {
         $this->products = $products;
@@ -43,7 +46,8 @@ class Order extends Component
 
     public function store()
     {
-        $this->form->save($this->products);
+        $this->form->save($this->products, array_filter($this->quantities));
+
         $this->banner('Order placed');
     }
     public function render()

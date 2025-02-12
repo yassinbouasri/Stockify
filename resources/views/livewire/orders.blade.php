@@ -54,15 +54,16 @@
 
             </div>
             <div class="mx-4 my-4">
-                <x-validation-errors></x-validation-errors>
+                <x-validation-errors/>
             </div>
 
             <div class=" mx-4 my-4">
+
                 <x-button>Create Order</x-button>
             </div>
         </form>
     </div>
     <div class="w-2/6  text-white mx-40 my-20">
-        <livewire:product-cart/>
+        <livewire:product-cart wire:model="quantities" />
     </div>
 </div>

@@ -16,12 +16,14 @@
                 <td>{{ $product->sku }}</td>
                 <td>{{ $product->price }}</td>
                 <td>
-                    <button>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                             stroke="currentColor" class="size-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14"/>
-                        </svg>
-                    </button>
+                        <span wire:key="stock-{{ $product->id }}">
+                            <x-input
+                                wire:key="stock-quantity-{{ $product->id }}"
+                                wire:model="quantities.{{ $product->id }}"
+                                type="number"
+                                class="w-12 h-8  rounded-md px-2 "
+                            />
+                        </span>
                 </td>
             </tr>
 

@@ -3,12 +3,14 @@
 namespace App\Livewire\Forms;
 
 use App\Actions\Stockify\AddProductsToOrder;
+use App\Actions\Stockify\DecrementProductStockQuantity;
 use App\Enums\PaymentMethod;
 use App\Enums\Status;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Enum;
+use Livewire\Attributes\Modelable;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -25,30 +27,35 @@ class OrderForm extends Form
     #[Validate(['required', (new Enum(PaymentMethod::class))])]
     public $payment_method;
 
-    public int $quantity = 2;
 
 
-    public function save($productId)
+    public function save($productId, array $quantities)
     {
         $this->validate();
 
-        DB::transaction(function () use ($productId) {
+        DB::transaction(function () use ($productId, $quantities) {
 
             $products = Product::find($productId);
 
-            $this->setTotalPrice($products);
+            $quantity = $this->productQuantity($products, $quantities);
+
+            $this->setTotalPrice($products, $quantity);
+
 
             $order = Order::firstOrCreate($this->only(['customer_id', 'invoice_number', 'total_price', 'status', 'payment_method']));
 
             foreach ($products as $product) {
 
-
-                $totalAmount = ($product->price->getAmount() * $this->quantity);
-
-
-                $order->products()->attach($product, ['quantity' => $this->quantity, 'total_amount' => $totalAmount]);
-
+                $totalAmount = ($product->price->getAmount() * $quantity);
+                $order->products()->attach(
+                    $product,
+                        [
+                            'quantity' => $quantity,
+                            'total_amount' => $totalAmount
+                        ]);
             }
+
+            (new DecrementProductStockQuantity())->decrement($products, $quantity);
 
         });
 
@@ -59,12 +66,24 @@ class OrderForm extends Form
      * @param $products
      * @return void
      */
-    private function setTotalPrice($products): void
+    private function setTotalPrice($products, int $quantity): void
     {
         foreach ($products as $product) {
 
-            $this->total_price += $product->price->getAmount() * $this->quantity;
+            $this->total_price += ($product->price->getAmount() * $quantity);
         }
     }
+
+    private function productQuantity($products, array $quantities): int
+    {
+        $quantity = 0;
+        foreach ($products as $product) {
+            $quantity = $quantities[$product->id];
+        }
+
+        return $quantity;
+    }
+
+
 
 }
