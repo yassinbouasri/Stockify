@@ -11,6 +11,7 @@ use App\Models\Customer;
 use App\Models\Product;
 use Laravel\Jetstream\InteractsWithBanner;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class Order extends Component
@@ -47,6 +48,11 @@ class Order extends Component
 
     public function store(OrderProductAttacher $orderAttach)
     {
+        $this->quantities = array_filter($this->quantities);
+        $this->validate([
+            'quantities' => ['required', 'array'],
+            'quantities.*' => ['required', 'numeric', 'min:0', 'integer'],
+        ]);
         $this->form->save($this->products, array_filter($this->quantities), $orderAttach);
 
         $this->banner('Order placed');

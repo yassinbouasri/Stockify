@@ -67,11 +67,11 @@ class OrderForm extends Form
 
     private function productQuantity($products, array $quantities): int
     {
+        //TODO
         $quantity = 0;
         foreach ($products as $product) {
-            $quantity = $quantities[$product->id];
+            $quantity = $quantities[$product->id] ;
         }
-
         return $quantity;
     }
 
