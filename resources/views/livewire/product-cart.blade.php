@@ -32,5 +32,9 @@
         </tbody>
 
     </table>
+        <diV>
+            {{ $this->productList->onEachSide(1)->links() }}
+        </diV>
+
     @endif
 </div>

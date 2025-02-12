@@ -20,6 +20,7 @@ class ProductListing extends Component
     #[Computed]
     public function products()
     {
+        $this->resetPage();
         $query = Product::query()->with(['category','stocks']);
         if ($this->search) {
             $query->where('name', 'like', '%'.$this->search.'%')
@@ -28,8 +29,9 @@ class ProductListing extends Component
                 ->orWhereHas('category', function ($query) {
                     $query->where('name', 'like', '%'.$this->search.'%');
                 });
-            $this->resetPage();
+
         }
+        $this->resetPage();
         return $query->orderByDesc('created_at')->paginate(20);
     }
 

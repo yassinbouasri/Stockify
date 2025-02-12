@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class DecrementProductStockQuantity
 {
-    function decrement(Collection $products, int $quantity): void
+    public function decrement(Collection $products, int $quantity): void
     {
         foreach ($products as $product) {
             foreach ($product->stocks as $stock) {
@@ -20,4 +20,5 @@ class DecrementProductStockQuantity
 
         }
     }
+
 }

@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -30,6 +31,7 @@ class SelectProductsModal extends Component
     #[Computed]
     public function searchedProducts()
     {
+
         $query = '';
         if (!empty($this->query)) {
             $query = $this->query;
@@ -57,6 +59,7 @@ class SelectProductsModal extends Component
     public function openModal()
     {
         $this->show = true;
+        $this->resetPage();
     }
 
     public function render()

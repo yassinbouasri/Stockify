@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Actions\Stockify\DecrementProductStockQuantity;
+use App\Actions\Stockify\OrderProductAttacher;
 use App\Enums\PaymentMethod;
 use App\Enums\Status;
 use App\Livewire\Forms\OrderForm;
@@ -44,9 +45,9 @@ class Order extends Component
         $this->paymentMethod = PaymentMethod::cases();
     }
 
-    public function store()
+    public function store(OrderProductAttacher $orderAttach)
     {
-        $this->form->save($this->products, array_filter($this->quantities));
+        $this->form->save($this->products, array_filter($this->quantities), $orderAttach);
 
         $this->banner('Order placed');
     }
