@@ -22,10 +22,6 @@ class ProductCart extends Component
     public array $quantities = [];
 
 
-    public function mount()
-    {
-
-    }
 
     public function selectedProducts(array $products)
     {
@@ -39,7 +35,10 @@ class ProductCart extends Component
         if (!$this->products) {
             return [];
         }
-        return Product::whereIn('id', $this->products)->with(['category','stocks'])->paginate(10);
+        return Product::whereIn('id', $this->products)
+            ->with(['category','stocks'])
+            ->orderByDesc('created_at')
+            ->paginate(10);
     }
     public function render()
     {

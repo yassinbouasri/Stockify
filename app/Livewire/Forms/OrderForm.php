@@ -28,8 +28,6 @@ class OrderForm extends Form
     #[Validate(['required', (new Enum(PaymentMethod::class))])]
     public $payment_method;
 
-    public int $quantity;
-
 
     public function save($productId, array $quantities, OrderProductAttacher $orderAttach)
     {
@@ -39,14 +37,12 @@ class OrderForm extends Form
 
             $products = Product::find($productId);
 
-            $this->quantity = $this->productQuantity($products, $quantities);
-
-            $this->setTotalPrice($products);
+            $this->setTotalPrice($products,$quantities);
 
 
             $order = Order::firstOrCreate($this->only(['customer_id', 'invoice_number', 'total_price', 'status', 'payment_method']));
 
-            $orderAttach->attachProduct($products, $order, $this->quantity);
+            $orderAttach->attachProduct($products, $order, $quantities);
 
 
         });
@@ -56,25 +52,12 @@ class OrderForm extends Form
      * @param $products
      * @return void
      */
-    private function setTotalPrice($products): void
+    private function setTotalPrice($products, $quantities): void
     {
         foreach ($products as $product) {
 
-            $this->total_price += $product->price->multiply($this->quantity)->getAmount();
+            $this->total_price += $product->price->multiply($quantities[$product->id])->getAmount();
         }
     }
-
-
-    private function productQuantity($products, array $quantities): int
-    {
-        //TODO
-        $quantity = 0;
-        foreach ($products as $product) {
-            $quantity = $quantities[$product->id] ;
-        }
-        return $quantity;
-    }
-
-
 
 }

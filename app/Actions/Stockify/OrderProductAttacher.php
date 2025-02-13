@@ -13,19 +13,21 @@ class OrderProductAttacher
     {
     }
 
-    public function attachProduct($products, $order, $quantity )
+    public function attachProduct($products, $order, array $quantities )
     {
         foreach ($products as $product) {
 
-            $totalAmount = $product->price->multiply($quantity);
+            $totalAmount = $product->price->multiply($quantities[$product->id]);
             $order->products()->attach(
                 $product,
                 [
-                    'quantity' => $quantity,
+                    'quantity' => $quantities[$product->id],
                     'total_amount' => $totalAmount->getAmount(),
                 ]);
+
+            $this->stockService->decrement($product,(int) $quantities[$product->id]);
+
         }
-        $this->stockService->decrement($products, $quantity);
 
     }
 }
