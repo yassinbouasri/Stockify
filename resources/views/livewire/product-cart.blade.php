@@ -12,16 +12,19 @@
         <tbody class="text-gray-700 dark:text-gray-400">
         @foreach($this->productList as $product)
             <tr>
-                <td>{{ $product->name }}</td>
-                <td>{{ $product->sku }}</td>
-                <td>{{ $product->price }}</td>
-                <td>
-                    <button>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                             stroke="currentColor" class="size-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14"/>
-                        </svg>
-                    </button>
+                <td class="px-1">{{ $product->name }}</td>
+                <td class="px-1">{{ $product->sku }}</td>
+                <td class="px-1">{{ $product->price }}</td>
+                <td class="px-1">
+                        <span wire:key="stock-{{ $product->id }}">
+                            <x-input
+                                wire:model="quantities.{{ $product->id }}"
+                                type="number"
+                                min="1"
+                                value="1"
+                                class="w-20 h-7  rounded-md py-2  px-1 mt-1"
+                            />
+                        </span>
                 </td>
             </tr>
 
@@ -30,5 +33,9 @@
         </tbody>
 
     </table>
+        <diV>
+            {{ $this->productList->onEachSide(1)->links() }}
+        </diV>
+
     @endif
 </div>

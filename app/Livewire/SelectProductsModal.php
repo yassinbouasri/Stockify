@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -20,14 +21,17 @@ class SelectProductsModal extends Component
 
     public Product $product;
 
+
     public function updatedQuery()
     {
         $this->searchedProducts();
+        $this->resetPage();
     }
 
     #[Computed]
     public function searchedProducts()
     {
+
         $query = '';
         if (!empty($this->query)) {
             $query = $this->query;
@@ -36,7 +40,7 @@ class SelectProductsModal extends Component
         return Product::search($query)
             ->query(fn(Builder $builder) => $builder->with(['category', 'stocks']))
             ->orderByDesc('created_at')
-            ->paginate();
+            ->paginate(15);
     }
 
     public function toggleProduct(int $product)
@@ -55,6 +59,7 @@ class SelectProductsModal extends Component
     public function openModal()
     {
         $this->show = true;
+        $this->resetPage();
     }
 
     public function render()

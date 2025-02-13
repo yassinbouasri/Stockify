@@ -4,25 +4,39 @@ namespace App\Livewire;
 
 use App\Models\Product;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Modelable;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class ProductCart extends Component
 {
+    use WithPagination;
     protected $listeners = [
         'selectedProducts',
     ];
 
     public array $products = [];
 
+    #[Modelable]
+    public array $quantities = [];
+
     public function selectedProducts(array $products)
     {
         $this->products = $products;
+        $this->resetPage();
     }
 
-    #[Computed]
+    #[Computed(cache: false)]
     public function productList()
     {
-        return Product::find($this->products);
+        if (!$this->products) {
+            return [];
+        }
+        return Product::whereIn('id', $this->products)
+            ->with(['category','stocks'])
+            ->orderByDesc('created_at')
+            ->paginate(10);
     }
     public function render()
     {

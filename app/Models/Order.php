@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Money\Currency;
 use Money\Money;
 
@@ -32,7 +33,8 @@ class Order extends Model
 
     public function products(): belongsToMany
     {
-        return $this->belongsToMany(Product::class, 'order_product');
+        return $this->belongsToMany(Product::class, 'order_product')
+            ->withPivot(['quantity', 'total_amount']);
     }
 
     public function totalPrice(): Attribute
@@ -43,6 +45,7 @@ class Order extends Model
             }
         );
     }
+
 
 
 }
