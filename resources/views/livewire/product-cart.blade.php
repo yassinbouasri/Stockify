@@ -12,16 +12,17 @@
         <tbody class="text-gray-700 dark:text-gray-400">
         @foreach($this->productList as $product)
             <tr>
-                <td>{{ $product->name }}</td>
-                <td>{{ $product->sku }}</td>
-                <td>{{ $product->price }}</td>
-                <td>
+                <td class="px-1">{{ $product->name }}</td>
+                <td class="px-1">{{ $product->sku }}</td>
+                <td class="px-1">{{ $product->price }}</td>
+                <td class="px-1">
                         <span wire:key="stock-{{ $product->id }}">
                             <x-input
-                                wire:key="stock-quantity-{{ $product->id }}"
                                 wire:model="quantities.{{ $product->id }}"
                                 type="number"
-                                class="w-12 h-8  rounded-md px-2 "
+                                min="1"
+                                value="1"
+                                class="w-20 h-7  rounded-md py-2  px-1 mt-1"
                             />
                         </span>
                 </td>

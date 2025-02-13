@@ -31,6 +31,7 @@ class Order extends Component
 
     public ?array $quantities = [];
 
+
     public function selectedProducts(array $products)
     {
         $this->products = $products;
@@ -46,12 +47,17 @@ class Order extends Component
         $this->paymentMethod = PaymentMethod::cases();
     }
 
+
     public function store(OrderProductAttacher $orderAttach)
     {
         $this->quantities = array_filter($this->quantities);
         $this->validate([
-            'quantities' => ['required', 'array'],
-            'quantities.*' => ['required', 'numeric', 'min:0', 'integer'],
+            'quantities' => ['required'],
+            'quantities.*' => ['required', 'min:1', 'integer'],
+        ],[
+            'quantities.*.required' => 'The quantity field is required.',
+            'quantities.*.integer' => 'The quantity must be a number.',
+            'quantities.*.min' => 'The quantity must be higher or equal to 1.',
         ]);
         $this->form->save($this->products, array_filter($this->quantities), $orderAttach);
 

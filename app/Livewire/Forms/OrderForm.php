@@ -44,7 +44,6 @@ class OrderForm extends Form
 
             $orderAttach->attachProduct($products, $order, $quantities);
 
-
         });
     }
 

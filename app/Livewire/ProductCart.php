@@ -21,15 +21,13 @@ class ProductCart extends Component
     #[Modelable]
     public array $quantities = [];
 
-
-
     public function selectedProducts(array $products)
     {
         $this->products = $products;
         $this->resetPage();
     }
 
-    #[Computed]
+    #[Computed(cache: false)]
     public function productList()
     {
         if (!$this->products) {
