@@ -31,7 +31,7 @@
 
         <div class="border-t border-gray-300 my-4"></div>
 
-        <h3 class="text-gray-300 font-bold text-m my-4">Products:</h3>
+        <h3 class="font-bold text-m my-4">Products:</h3>
         <div>
 
             <table class="text-gray-700 dark:text-gray-400 table-auto w-full max-w-6xl mx-auto my-3">

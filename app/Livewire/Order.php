@@ -46,12 +46,14 @@ class Order extends Component
 
     public function store(OrderProductAttacher $orderAttach)
     {
-        $this->quantities = array_filter($this->quantities);
+        $this->quantities = array_map('intval', array_filter($this->quantities));
 
+//        dd($this->quantities ?? 1);
         $this->validate([
-            'quantities' => ['required'],
-            'quantities.*' => ['required', 'min:1', 'integer'],
+            'quantities' => ['required', 'array', 'min:1'],
+            'quantities.*' => ['required', 'integer', 'min:1'],
         ],[
+            'quantities.required' => 'The quantity field is required.',
             'quantities.*.required' => 'The quantity field is required.',
             'quantities.*.integer' => 'The quantity must be a number.',
             'quantities.*.min' => 'The quantity must be higher or equal to 1.',

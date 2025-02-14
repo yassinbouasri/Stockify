@@ -36,7 +36,6 @@ class SelectProductsModal extends Component
         if (!empty($this->query)) {
             $query = $this->query;
         }
-
         return Product::search($query)
             ->query(fn(Builder $builder) => $builder->with(['category', 'stocks']))
             ->orderByDesc('created_at')

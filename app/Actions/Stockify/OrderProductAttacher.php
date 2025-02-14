@@ -17,6 +17,9 @@ class OrderProductAttacher
     {
         foreach ($products as $product) {
 
+            if(!isset($quantities[$product->id])){
+                $quantities[$product->id] = 1;
+            }
             $totalAmount = $product->price->multiply($quantities[$product->id]);
             $order->products()->attach(
                 $product,
@@ -25,7 +28,7 @@ class OrderProductAttacher
                     'total_amount' => $totalAmount->getAmount(),
                 ]);
 
-            $this->stockService->decrement($product,(int) $quantities[$product->id]);
+            $this->stockService->decrement($product,$quantities[$product->id]);
 
         }
 

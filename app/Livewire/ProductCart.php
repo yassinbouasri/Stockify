@@ -33,10 +33,19 @@ class ProductCart extends Component
         if (!$this->products) {
             return [];
         }
-        return Product::whereIn('id', $this->products)
+
+        $products = Product::whereIn('id', $this->products)
             ->with(['category','stocks'])
             ->orderByDesc('created_at')
             ->paginate(10);
+
+        foreach ($products as $product) {
+            if (!isset($this->quantities[$product->id])) {
+                $this->quantities[$product->id] = 1;
+            }
+        }
+
+        return $products;
     }
     public function render()
     {

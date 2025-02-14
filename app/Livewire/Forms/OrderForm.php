@@ -65,6 +65,9 @@ class OrderForm extends Form
     {
         foreach ($products as $product) {
 
+            if (!isset($quantities[$product->id])) {
+                $quantities[$product->id] = 1;
+            }
             $this->total_price += $product->price->multiply($quantities[$product->id])->getAmount();
         }
     }
