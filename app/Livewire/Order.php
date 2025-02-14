@@ -47,6 +47,7 @@ class Order extends Component
     public function store(OrderProductAttacher $orderAttach)
     {
         $this->quantities = array_filter($this->quantities);
+
         $this->validate([
             'quantities' => ['required'],
             'quantities.*' => ['required', 'min:1', 'integer'],
@@ -55,11 +56,13 @@ class Order extends Component
             'quantities.*.integer' => 'The quantity must be a number.',
             'quantities.*.min' => 'The quantity must be higher or equal to 1.',
         ]);
+
         $order = $this->form->save($this->products, array_filter($this->quantities), $orderAttach);
 
-        $this->banner('Order placed');
+
 
         redirect()->route('order-details', ['order' => $order->id]);
+        $this->banner('Order placed');
     }
     public function render()
     {

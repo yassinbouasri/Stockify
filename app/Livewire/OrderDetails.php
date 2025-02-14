@@ -23,7 +23,7 @@ class OrderDetails extends Component
 
     public function getProductsProperty()
     {
-        return $this->order->products()->paginate(5);
+        return $this->order->products()->paginate(10);
     }
 
     public function render()

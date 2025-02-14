@@ -11,6 +11,8 @@
                 <div class="text-xs my-4 font-light ml-4">
                     <p> {{ $order->invoice_number }}</p>
                     <p> {{ $order->payment_method }}</p>
+                    <p> {{ $order->status }}</p>
+                    <p> {{ $order->total_price }}</p>
 
                 </div>
 
@@ -37,6 +39,7 @@
                        style="text-align: left !important;">
                 <tr>
                     <th>Name</th>
+                    <th>Category</th>
                     <th>SKU</th>
                     <th>Price</th>
                     <th>Quantity</th>
@@ -49,6 +52,7 @@
                     <tr>
 
                         <td>{{ $product->name }}</td>
+                        <td>{{ $product->category->name }}</td>
                         <td>{{ $product->sku }}</td>
                         <td>{{ $product->price }}</td>
                         <td>{{ $product->pivot->quantity }}</td>
