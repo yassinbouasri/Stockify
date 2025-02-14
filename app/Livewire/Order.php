@@ -2,16 +2,12 @@
 
 namespace App\Livewire;
 
-use App\Actions\Stockify\DecrementProductStockQuantity;
 use App\Actions\Stockify\OrderProductAttacher;
 use App\Enums\PaymentMethod;
 use App\Enums\Status;
 use App\Livewire\Forms\OrderForm;
 use App\Models\Customer;
-use App\Models\Product;
 use Laravel\Jetstream\InteractsWithBanner;
-use Livewire\Attributes\Computed;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class Order extends Component
@@ -59,9 +55,11 @@ class Order extends Component
             'quantities.*.integer' => 'The quantity must be a number.',
             'quantities.*.min' => 'The quantity must be higher or equal to 1.',
         ]);
-        $this->form->save($this->products, array_filter($this->quantities), $orderAttach);
+        $order = $this->form->save($this->products, array_filter($this->quantities), $orderAttach);
 
         $this->banner('Order placed');
+
+        redirect()->route('order-details', ['order' => $order->id]);
     }
     public function render()
     {

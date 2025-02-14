@@ -45,7 +45,9 @@ class Product extends Model
 
     public function orders(): belongsToMany
     {
-        return $this->belongsToMany(Order::class, 'order_product');
+        return $this->belongsToMany(Order::class)
+            ->withPivot(['quantity','total_price'])
+            ->using(OrderProduct::class);
     }
 
     public function toSearchableArray()
@@ -55,5 +57,6 @@ class Product extends Model
             'created_at' => $this->created_at->timestamp,
         ]);
     }
+
 
 }
