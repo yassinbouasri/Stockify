@@ -11,12 +11,15 @@ use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Enum;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\Modelable;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class OrderForm extends Form
 {
+    #[Locked]
+    public $id = 0;
     public $customer_id = 1;
     #[Validate('required')]
     public $invoice_number;
@@ -28,12 +31,17 @@ class OrderForm extends Form
     #[Validate(['required', (new Enum(PaymentMethod::class))])]
     public $payment_method;
 
+    public function mount(Order $order)
+    {
+        $this->id = $order->id;
+    }
+
 
     public function save($productId, array $quantities, OrderProductAttacher $orderAttach)
     {
         $this->validate();
 
-        DB::transaction(function () use ($productId, $quantities, $orderAttach) {
+        return DB::transaction(function () use ($productId, $quantities, $orderAttach) {
 
             $products = Product::find($productId);
 
@@ -44,7 +52,9 @@ class OrderForm extends Form
 
             $orderAttach->attachProduct($products, $order, $quantities);
 
+            return $order;
         });
+
     }
 
     /**
@@ -55,6 +65,9 @@ class OrderForm extends Form
     {
         foreach ($products as $product) {
 
+            if (!isset($quantities[$product->id])) {
+                $quantities[$product->id] = 1;
+            }
             $this->total_price += $product->price->multiply($quantities[$product->id])->getAmount();
         }
     }

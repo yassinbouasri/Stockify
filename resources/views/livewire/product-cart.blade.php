@@ -16,15 +16,17 @@
                 <td class="px-1">{{ $product->sku }}</td>
                 <td class="px-1">{{ $product->price }}</td>
                 <td class="px-1">
-                        <span wire:key="stock-{{ $product->id }}">
                             <x-input
+                                wire:key="stock-{{ $product->id }}"
                                 wire:model="quantities.{{ $product->id }}"
                                 type="number"
                                 min="1"
                                 value="1"
                                 class="w-20 h-7  rounded-md py-2  px-1 mt-1"
                             />
-                        </span>
+{{--                    @error("quantities.{{ $product->id }}")--}}
+{{--                    <span>{{ $message }}</span>--}}
+{{--                    @enderror--}}
                 </td>
             </tr>
 

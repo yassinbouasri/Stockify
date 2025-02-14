@@ -2,6 +2,7 @@
 
 use App\Livewire\CreateProduct;
 use App\Livewire\Order;
+use App\Livewire\OrderDetails;
 use App\Livewire\ProductListing;
 use App\Livewire\UpdateProduct;
 use Illuminate\Support\Facades\Route;
@@ -25,5 +26,6 @@ Route::middleware([
     Route::get('update-product/{product}', UpdateProduct::class)->name('update-product');
 
     Route::get('/orders', Order::class)->name('orders');
+    Route::get('/order/{order}', OrderDetails::class)->name('order-details');
 
 });
