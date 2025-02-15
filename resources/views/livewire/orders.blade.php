@@ -64,6 +64,6 @@
         </form>
     </div>
     <div class="w-2/6  text-white mx-40 my-20">
-        <livewire:product-cart wire:model.defer="quantities" />
+        <livewire:product-cart  wire:model.defer="quantities" />
     </div>
 </div>

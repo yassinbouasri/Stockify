@@ -3,7 +3,6 @@
 namespace App\Livewire\Forms;
 
 use App\Actions\Stockify\AddProductsToOrder;
-use App\Actions\Stockify\DecrementProductStockQuantity;
 use App\Actions\Stockify\OrderProductAttacher;
 use App\Enums\PaymentMethod;
 use App\Enums\Status;
@@ -37,11 +36,11 @@ class OrderForm extends Form
     }
 
 
-    public function save($productId, array $quantities, OrderProductAttacher $orderAttach)
+    public function save($productId, array $quantities, OrderProductAttacher $orderAttach, array $maxQuantities)
     {
         $this->validate();
 
-        return DB::transaction(function () use ($productId, $quantities, $orderAttach) {
+        return DB::transaction(function () use ($productId, $quantities, $orderAttach,$maxQuantities) {
 
             $products = Product::find($productId);
 
@@ -50,7 +49,7 @@ class OrderForm extends Form
 
             $order = Order::firstOrCreate($this->only(['customer_id', 'invoice_number', 'total_price', 'status', 'payment_method']));
 
-            $orderAttach->attachProduct($products, $order, $quantities);
+            $orderAttach->attachProduct($products, $order, $quantities, $maxQuantities);
 
             return $order;
         });

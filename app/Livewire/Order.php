@@ -13,20 +13,18 @@ use Livewire\Component;
 class Order extends Component
 {
     use InteractsWithBanner;
+
     public $paymentMethod;
     public OrderForm $form;
 
 
     public ?Customer $customer = null;
-    protected $listeners = [
-        'selectedCustomer',
-        'selectedProducts',
-    ];
-
     public array $products = [];
-
     public ?array $quantities = [];
-
+    public array $maxQuantities = [];
+    protected $listeners = [
+        'selectedCustomer', 'selectedProducts', 'maxQuantities',
+    ];
 
     public function selectedProducts(array $products)
     {
@@ -38,6 +36,11 @@ class Order extends Component
         $this->customer = $customer;
     }
 
+    public function maxQuantities(array $quantities)
+    {
+        $this->maxQuantities = $quantities;
+    }
+
     public function mount()
     {
         $this->paymentMethod = PaymentMethod::cases();
@@ -46,29 +49,49 @@ class Order extends Component
 
     public function store(OrderProductAttacher $orderAttach)
     {
-        $this->quantities = array_map('intval', array_filter($this->quantities));
+        $this->quantities = $this->getMaxAndDefaultQuantity($this->quantities);
+        $this->maxQuantities = $this->getMaxAndDefaultQuantity(session()->get('maxQuantities'));
 
-        $this->validate([
-            'quantities' => ['required', 'array', 'min:1'],
-            'quantities.*' => ['required', 'integer', 'min:1'],
-        ],[
-            'quantities.required' => 'The quantity field is required.',
-            'quantities.*.required' => 'The quantity field is required.',
-            'quantities.*.integer' => 'The quantity must be a number.',
-            'quantities.*.min' => 'The quantity must be higher or equal to 1.',
-        ]);
 
-        $order = $this->form->save($this->products, array_filter($this->quantities), $orderAttach);
+        $this->validation();
 
+        $order = $this->form->save($this->products, $this->quantities, $orderAttach, $this->maxQuantities);
 
 
         redirect()->route('order-details', ['order' => $order->id]);
         $this->banner('Order placed');
     }
+
+    public function getMaxAndDefaultQuantity($value): array
+    {
+        return array_map('intval', array_intersect_key($value, array_flip($this->products)));
+    }
+
+    /**
+     * @return void
+     */
+    public function validation(): void
+    {
+        $this->validate([
+                            'quantities' => [
+                                'required', 'array'
+                            ], 'quantities.*' => [
+                'required', 'integer', 'min:1'
+            ],
+                        ], [
+                            'quantities.required'   => 'The quantity field is required.',
+                            'quantities.*.required' => 'The quantity field is required.',
+                            'quantities.*.integer'  => 'The quantity must be a number.',
+                            'quantities.*.min'      => 'The quantity must be higher or equal to 1.',
+                        ]
+        );
+    }
+
     public function render()
     {
-        return view('livewire.orders',[
-            'ordersStatus' => Status::cases()
-        ]);
+        return view('livewire.orders', [
+                                         'ordersStatus' => Status::cases()
+                                     ]
+        );
     }
 }
