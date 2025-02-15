@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\PrintOrder;
 use App\Livewire\CreateProduct;
 use App\Livewire\Order;
 use App\Livewire\OrderDetails;
+use App\Livewire\PrintOrderDetails;
 use App\Livewire\ProductListing;
 use App\Livewire\UpdateProduct;
 use Illuminate\Support\Facades\Route;
@@ -12,11 +14,7 @@ Route::get('/', function () {
 });
 
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
@@ -27,5 +25,7 @@ Route::middleware([
 
     Route::get('/orders', Order::class)->name('orders');
     Route::get('/order/{order}', OrderDetails::class)->name('order-details');
+
+    Route::get('/order/{order}/print', PrintOrderDetails::class)->name('print-details');
 
 });
