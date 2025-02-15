@@ -2,7 +2,7 @@
     <x-slot:header>Order Details</x-slot:header>
     <div class="dark:text-gray-300">
         <h2 class=" font-bold text-lg text-center mt-4">Order #{{ $order->id }} ({{ $order->status }})</h2>
-        <div class=" font-thin text-xs text-center mt-0">{{ $order->created_at->format('M d, Y') }}</div>
+        <div class=" font-thin text-xs text-center mt-0">{{ $order->created_at->toFormattedDateString() }}</div>
 
         <div class="flex justify-between mb-4 mt-6">
             <div>
@@ -72,15 +72,20 @@
                 </tbody>
             </table>
             <div>
-                {{ $this->products->onEachSide(1)->links() }}
+                @if(method_exists($this->products, 'onEachSide'))
+                    {{$this->products->onEachSide(1)->links() }}
+                @endif
             </div>
 
             <div class="flex justify-end mx-8 my-4 text-xl">
 
                 <p><span class="font-bold">Total:</span> {{ $order->total_price }}</p>
             </div>
-        </div>
 
+        </div>
+        <div class="flex justify-end mx-8 my-4">
+            <x-button wire:click="prepareForPrint">Print</x-button>
+        </div>
 
     </div>
 </div>
