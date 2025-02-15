@@ -1,11 +1,8 @@
 <div>
     <script>
-        window.onload = function() {
-            // Show only printable content
+        window.onload = function () {
             document.body.classList.add('print-visible');
             window.print();
-
-            // Close window after print
             setTimeout(() => {
                 window.close();
             }, 100);

@@ -6,6 +6,8 @@ declare(strict_types=1);
 namespace App\Actions\Stockify;
 
 use App\Models\Product;
+use Illuminate\Validation\ValidationException;
+
 
 class OrderProductAttacher
 {
@@ -13,9 +15,17 @@ class OrderProductAttacher
     {
     }
 
-    public function attachProduct($products, $order, array $quantities )
+    public function attachProduct($products, $order, array $quantities, array $maxQuantities )
     {
         foreach ($products as $product) {
+
+            if ($maxQuantities[$product->id] < $quantities[$product->id] ) {
+                throw ValidationException::withMessages([
+                    'quantity' => ($maxQuantities[$product->id]) > 0
+                        ?"{($product->name)} is out of stock! (Max: {$maxQuantities[$product->id]})"
+                        :"{($product->name)} is out of stock!"
+                ]);
+            }
 
             if(!isset($quantities[$product->id])){
                 $quantities[$product->id] = 1;
