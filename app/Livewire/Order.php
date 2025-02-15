@@ -48,7 +48,6 @@ class Order extends Component
     {
         $this->quantities = array_map('intval', array_filter($this->quantities));
 
-//        dd($this->quantities ?? 1);
         $this->validate([
             'quantities' => ['required', 'array', 'min:1'],
             'quantities.*' => ['required', 'integer', 'min:1'],
