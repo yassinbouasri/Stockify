@@ -1,10 +1,8 @@
 <div>
     <script>
         window.onload = function () {
-
             document.body.classList.add('print-visible');
             window.print();
-
             setTimeout(() => {
                 window.close();
             }, 100);
