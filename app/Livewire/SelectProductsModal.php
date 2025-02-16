@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Product;
+use App\Models\Stock;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
@@ -37,7 +38,11 @@ class SelectProductsModal extends Component
             $query = $this->query;
         }
         return Product::search($query)
-            ->query(fn(Builder $builder) => $builder->with(['category', 'stocks']))
+            ->query(fn(Builder $builder)
+                        => $builder->with(['category', 'stocks'])
+                               ->whereHas('stocks', function ($stockQuery) {
+                                   $stockQuery->where('quantity', '>', 0);
+                               }))
             ->orderByDesc('created_at')
             ->paginate(15);
     }
