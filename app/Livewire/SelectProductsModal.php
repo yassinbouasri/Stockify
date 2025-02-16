@@ -39,7 +39,7 @@ class SelectProductsModal extends Component
         return Product::search($query)
             ->query(fn(Builder $builder) => $builder->with(['category', 'stocks']))
             ->orderByDesc('created_at')
-            ->paginate(15);
+            ->paginate(20);
     }
 
     public function toggleProduct(int $product)
@@ -59,6 +59,11 @@ class SelectProductsModal extends Component
     {
         $this->show = true;
         $this->resetPage();
+    }
+
+    public function previewImage($imageUrl)
+    {
+        $this->dispatch('preview-image', url: $imageUrl);
     }
 
     public function render()
