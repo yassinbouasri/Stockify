@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Product;
 use App\Models\Stock;
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Reactive;
 use Livewire\Attributes\Url;
@@ -20,16 +21,14 @@ class ProductListing extends Component
     #[Computed]
     public function products()
     {
-        $query = Product::query()->with(['category','stocks']);
-        if ($this->search) {
-            $query->where('name', 'like', '%'.$this->search.'%')
-                ->orWhere('description', 'like', '%'.$this->search.'%')
-                ->orWhere("sku", "like", '%'.$this->search.'%')
-                ->orWhereHas('category', function ($query) {
-                    $query->where('name', 'like', '%'.$this->search.'%');
-                });
+        $query = '';
+        if (!empty($this->query)) {
+            $query = $this->query;
         }
-        return $query->orderByDesc('created_at')->paginate(20);
+        return Product::search($query)
+                      ->query(fn(Builder $builder) => $builder->with(['category', 'stocks']))
+                      ->orderByDesc('created_at')
+                      ->paginate(15);
     }
 
     public function updatedSearch()
