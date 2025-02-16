@@ -22,10 +22,13 @@ class StockQuantity extends Component
         $this->quantity = $stock->quantity;
     }
 
-    public function updateQuantity(UpdateStock $updateStock, Product $product)
+    public function updateQuantity(UpdateStock $updateStock)
     {
         $this->validate();
-        $updateStock->saveStock($this->stock, $this->quantity, $product);
+        $updateStock->saveStock(
+            stock: $this->stock,
+            quantity:  $this->quantity
+        );
         $this->banner('Stock Quantity Updated Successfully!');
     }
     public function render()

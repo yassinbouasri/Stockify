@@ -10,7 +10,7 @@ use App\Models\Stock;
 
 class UpdateStock
 {
-    public function saveStock(?Stock $stock, int $quantity, Product $product): void
+    public function saveStock(?Stock $stock, int $quantity, ?Product $product = null): void
     {
         if ($stock) {
             $stock->update(['quantity' => $quantity]);

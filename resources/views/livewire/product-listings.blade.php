@@ -30,7 +30,7 @@
                 <td
                 @forelse($product->stocks as $stock)
                     @if($stock->quantity <= 10)
-                        <span wire:key="stock-{{ $stock->id }}" class="text-red-500">
+                        <span wire:key="stock-{{ $stock->id }}" class="text-red-800">
                         <livewire:stock-quantity
                                 :$stock
                                 wire:key="stock-quantity-{{ $stock->id}}"
@@ -47,7 +47,7 @@
 
                 @empty
                     <span>
-                        <p>-</p>
+                        <p></p>
                         @endforelse
                     </span>
                     <td class="flex gap-1">

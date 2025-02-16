@@ -12,7 +12,6 @@
 
     <div x-show="editing" class="absolute top-0 left-0">
         <input
-                autofocuse
                 x-cloak
                 type="number"
                 wire:model.live="quantity"
