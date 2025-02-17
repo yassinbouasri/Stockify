@@ -20,7 +20,7 @@ class ProductFactory extends Factory
         return [
             'category_id' => Category::factory(),
             'name' => fake()->word,
-            'sku' => fake()->unique()->randomNumber(8),
+            'sku' => fake()->unique()->randomNumber(4) . '-' . fake()->unique()->randomNumber(4) ,
             'price' => fake()->randomNumber(3),
             'description' => fake()->sentence,
             'image' => "http://picsum.photos/seed/" . rand(0, 10000) . "/900",
