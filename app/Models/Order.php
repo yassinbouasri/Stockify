@@ -40,6 +40,8 @@ class Order extends Model
     {
         return array_merge($this->toArray(),[
             'id' => (string) $this->id,
+            'customer_name' => $this->customer->name,
+            'customer_email' => $this->customer->email,
             'created_at' => $this->created_at->timestamp,
         ]);
     }

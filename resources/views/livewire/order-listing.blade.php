@@ -12,7 +12,8 @@
         <thead class="bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-400 shadow text-left"
                style="text-align: left !important;">
         <tr class="">
-            <th>Customer</th>
+            <th>Customer Name</th>
+            <th>Customer Email</th>
             <th>Invoice Id</th>
             <th>Total Price</th>
             <th>Status</th>
@@ -25,6 +26,7 @@
         @foreach($this->orders as $order)
             <tr class="border-b dark:border-gray-600 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700">
                 <td>{{ $order->customer->name }}</td>
+                <td>{{ $order->customer->email }}</td>
                 <td>{{ $order->invoice_number }}</td>
                 <td>{{ $order->total_price }}</td>
                 <td>{{ $order->status }}</td>
@@ -33,8 +35,6 @@
 
 
                 <td class="flex gap-1">
-                        {{--                    <button wire:click="$dispatch('preview-image', { url: '{{ $product->image }}' })">--}}
-
                     </td>
             </tr>
         @endforeach

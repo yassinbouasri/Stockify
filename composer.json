@@ -20,7 +20,7 @@
         "laravel/scout": "^10.12",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.0",
-        "meilisearch/meilisearch-php": "^1.12",
+        "meilisearch/meilisearch-php": "^1.13",
         "moneyphp/money": "^4.6",
         "typesense/typesense-php": "^4.9"
     },

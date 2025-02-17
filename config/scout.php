@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Product;
@@ -147,6 +148,12 @@ return [
             // 'users' => [
             //     'filterableAttributes'=> ['id', 'name', 'email'],
             // ],
+            'products' => [
+                'filterableAttributes' => ['id', 'name', 'created_at'],
+            ],
+            'orders' => [
+                'filterableAttributes' => ['id', 'invoice_number', 'status'],
+            ]
         ],
     ],
 
@@ -161,112 +168,143 @@ return [
     |
     */
 
-    'typesense' => [
-        'client-settings' => [
-            'api_key' => env('TYPESENSE_API_KEY', 'xyz'),
-            'nodes' => [
-                [
-                    'host' => env('TYPESENSE_HOST', 'localhost'),
-                    'port' => env('TYPESENSE_PORT', '8108'),
-                    'path' => env('TYPESENSE_PATH', ''),
-                    'protocol' => env('TYPESENSE_PROTOCOL', 'http'),
-                ],
-            ],
-            'nearest_node' => [
-                'host' => env('TYPESENSE_HOST', 'localhost'),
-                'port' => env('TYPESENSE_PORT', '8108'),
-                'path' => env('TYPESENSE_PATH', ''),
-                'protocol' => env('TYPESENSE_PROTOCOL', 'http'),
-            ],
-            'connection_timeout_seconds' => env('TYPESENSE_CONNECTION_TIMEOUT_SECONDS', 2),
-            'healthcheck_interval_seconds' => env('TYPESENSE_HEALTHCHECK_INTERVAL_SECONDS', 30),
-            'num_retries' => env('TYPESENSE_NUM_RETRIES', 3),
-            'retry_interval_seconds' => env('TYPESENSE_RETRY_INTERVAL_SECONDS', 1),
-        ],
-        // 'max_total_results' => env('TYPESENSE_MAX_TOTAL_RESULTS', 1000),
-        // config/scout.php
-        'model-settings' => [
-            Customer::class => [
-                'collection-schema' => [
-                    'fields' => [
-                        [
-                            'name' => 'id' ,
-                            'type' => 'string'
-                        ],
-                        [
-                            'name' => 'name',
-                            'type' => 'string',
-                        ],
-                        [
-                            'name' => 'email',
-                            'type' => 'string',
-                        ],
-                        [
-                            'name' => 'created_at',
-                            'type' => 'int64',
-                        ],
-                    ],
-                    'default_sorting_field' => 'created_at',
-                ],
-                'search-parameters' => [
-                    'query_by' => 'name, email'
-                ],
-            ],
-            Product::class => [
-                'collection-schema' => [
-                    'fields' => [
-                        [
-                            'name' => 'id' ,
-                            'type' => 'string'
-                        ],
-                        [
-                            'name' => 'name',
-                            'type' => 'string',
-                        ],
-                        [
-                            'name' => 'sku',
-                            'type' => 'string',
-                        ],
-                        [
-                            'name' => 'created_at',
-                            'type' => 'int64',
-                        ],
-                    ],
-                    'default_sorting_field' => 'created_at',
-                ],
-                'search-parameters' => [
-                    'query_by' => 'name, sku'
-
-                ],
-            ],
-            Order::class => [
-                'collection-schema' => [
-                    'fields' => [
-                        [
-                            'name' => 'id' ,
-                            'type' => 'string'
-                        ],
-                        [
-                            'name' => 'invoice_number',
-                            'type' => 'string',
-                        ],
-                        [
-                            'name' => 'status',
-                            'type' => 'string',
-                        ],
-                        [
-                            'name' => 'created_at',
-                            'type' => 'int64',
-                        ],
-                    ],
-                    'default_sorting_field' => 'created_at',
-                ],
-                'search-parameters' => [
-                    'query_by' => 'invoice_number, status'
-
-                ],
-            ],
-        ],
-    ],
+//    'typesense' => [
+//        'client-settings' => [
+//            'api_key' => env('TYPESENSE_API_KEY', 'xyz'),
+//            'nodes' => [
+//                [
+//                    'host' => env('TYPESENSE_HOST', 'localhost'),
+//                    'port' => env('TYPESENSE_PORT', '8108'),
+//                    'path' => env('TYPESENSE_PATH', ''),
+//                    'protocol' => env('TYPESENSE_PROTOCOL', 'http'),
+//                ],
+//            ],
+//            'nearest_node' => [
+//                'host' => env('TYPESENSE_HOST', 'localhost'),
+//                'port' => env('TYPESENSE_PORT', '8108'),
+//                'path' => env('TYPESENSE_PATH', ''),
+//                'protocol' => env('TYPESENSE_PROTOCOL', 'http'),
+//            ],
+//            'connection_timeout_seconds' => env('TYPESENSE_CONNECTION_TIMEOUT_SECONDS', 2),
+//            'healthcheck_interval_seconds' => env('TYPESENSE_HEALTHCHECK_INTERVAL_SECONDS', 30),
+//            'num_retries' => env('TYPESENSE_NUM_RETRIES', 3),
+//            'retry_interval_seconds' => env('TYPESENSE_RETRY_INTERVAL_SECONDS', 1),
+//        ],
+//        // 'max_total_results' => env('TYPESENSE_MAX_TOTAL_RESULTS', 1000),
+//        // config/scout.php
+//        'model-settings' => [
+//            Customer::class => [
+//                'collection-schema' => [
+//                    'fields' => [
+//                        [
+//                            'name' => 'id',
+//                            'type' => 'string'
+//                        ],
+//                        [
+//                            'name' => 'name',
+//                            'type' => 'string',
+//                        ],
+//                        [
+//                            'name' => 'email',
+//                            'type' => 'string',
+//                        ],
+//                        [
+//                            'name' => 'created_at',
+//                            'type' => 'int64',
+//                        ],
+//                    ],
+//                    'default_sorting_field' => 'created_at',
+//                ],
+//                'search-parameters' => [
+//                    'query_by' => 'name, email'
+//                ],
+//            ],
+//            Product::class => [
+//                'collection-schema' => [
+//                    'fields' => [
+//                        [
+//                            'name' => 'id',
+//                            'type' => 'string'
+//                        ],
+//                        [
+//                            'name' => 'name',
+//                            'type' => 'string',
+//                        ],
+//                        [
+//                            'name' => 'sku',
+//                            'type' => 'string',
+//                        ],
+//                        [
+//                            'name' => 'created_at',
+//                            'type' => 'int64',
+//                        ],
+//                    ],
+//                    'default_sorting_field' => 'created_at',
+//                ],
+//                'search-parameters' => [
+//                    'query_by' => 'name, sku'
+//
+//                ],
+//            ],
+//            Order::class => [
+//                'collection-schema' => [
+//                    'fields' => [
+//                        [
+//                            'name' => 'id',
+//                            'type' => 'string'
+//                        ],
+//                        [
+//                            'name' => 'category_id',
+//                            'type' => 'integer'
+//                        ],
+//                        [
+//                            'name' => 'invoice_number',
+//                            'type' => 'string',
+//                        ],
+//                        [
+//                            'name' => 'status',
+//                            'type' => 'string',
+//                        ],
+//                        [
+//                            'name' => 'created_at',
+//                            'type' => 'int64',
+//                        ],
+//                    ],
+//                    'default_sorting_field' => 'created_at',
+//                ],
+//                'search-parameters' => [
+//                    'query_by' => 'invoice_number, status, category_id',
+//
+//                ],
+//            ],
+//            Category::class => [
+//                'collection-schema' => [
+//                    'fields' => [
+//                        [
+//                            'name' => 'id',
+//                            'type' => 'string'
+//                        ],
+//                        [
+//                            'name' => 'name',
+//                            'type' => 'string',
+//                        ],
+//                        [
+//                            'name' => 'description',
+//                            'type' => 'string',
+//                        ],
+//                        [
+//                            'name' => 'created_at',
+//                            'type' => 'int64',
+//                        ],
+//                    ],
+//                    'default_sorting_field' => 'created_at',
+//                ],
+//                'search-parameters' => [
+//                    'query_by' => 'name, description'
+//
+//                ],
+//            ],
+//        ],
+//    ],
 
 ];

@@ -22,13 +22,13 @@ class OrderListing extends Component
 
         return Order::search($this->query)
                          ->query(fn(Builder $builder) => $builder->with(['products', 'customer']))
-                         ->orderByDesc('created_at')
                          ->paginate(15);
     }
 
     public function updatedQuery()
     {
         $this->orders();
+        $this->resetPage();
     }
     public function render()
     {

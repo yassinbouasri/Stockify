@@ -24,13 +24,15 @@ class ProductListing extends Component
     #[Computed]
     public function searchedProducts()
     {
-        if (empty($this->query)) {
-            return Product::with(['category', 'stocks'])->paginate(20);
+        $query = '';
+        if (!empty($this->query)) {
+            $query = $this->query;
         }
-        return Product::search($this->query)
-                      ->query(fn(Builder $builder) => $builder->with(['category', 'stocks']))
-                      ->orderByDesc('created_at')
+
+        return Product::search($query)
+            ->query(fn(Builder $builder) => $builder->with(['category', 'stocks']))
                       ->paginate(20);
+
     }
 
 
