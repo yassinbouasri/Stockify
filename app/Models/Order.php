@@ -5,20 +5,17 @@ namespace App\Models;
 use App\Casts\MoneyCast;
 use App\Enums\PaymentMethod;
 use App\Enums\Status;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Money\Currency;
-use Money\Money;
+use Laravel\Scout\Searchable;
 
 class Order extends Model
 {
     /** @use HasFactory<\Database\Factories\OrderFactory> */
     use HasFactory;
+    use Searchable;
 
     protected $casts = [
         'payment_method' => PaymentMethod::class,
@@ -37,6 +34,14 @@ class Order extends Model
             ->with(['category'])
             ->withPivot(['quantity', 'total_amount'])
             ->using(OrderProduct::class);
+    }
+
+    public function toSearchableArray()
+    {
+        return array_merge($this->toArray(),[
+            'id' => (string) $this->id,
+            'created_at' => $this->created_at->timestamp,
+        ]);
     }
 
 }

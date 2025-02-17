@@ -21,7 +21,7 @@
                                 wire:model="quantities.{{ $product->id }}"
                                 type="number"
                                 min="1"
-{{--                                max="{{ $this->maxQuantities[$product->id] }}"--}}
+                                max="{{ $this->maxQuantities[$product->id] }}"
                                 value="1"
                                 class="w-20 h-7  rounded-md py-2  px-1 mt-1"
                             />

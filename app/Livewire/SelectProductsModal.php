@@ -44,7 +44,7 @@ class SelectProductsModal extends Component
                                    $stockQuery->where('quantity', '>', 0);
                                }))
             ->orderByDesc('created_at')
-            ->paginate(15);
+            ->paginate(20);
     }
 
     public function toggleProduct(int $product)
@@ -64,6 +64,11 @@ class SelectProductsModal extends Component
     {
         $this->show = true;
         $this->resetPage();
+    }
+
+    public function previewImage($imageUrl)
+    {
+        $this->dispatch('preview-image', url: $imageUrl);
     }
 
     public function render()

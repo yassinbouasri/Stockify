@@ -4,6 +4,7 @@ use App\Http\Controllers\PrintOrder;
 use App\Livewire\CreateProduct;
 use App\Livewire\Order;
 use App\Livewire\OrderDetails;
+use App\Livewire\OrderListing;
 use App\Livewire\PrintOrderDetails;
 use App\Livewire\ProductListing;
 use App\Livewire\UpdateProduct;
@@ -23,9 +24,11 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/create-product', CreateProduct::class)->name('create-product');
     Route::get('update-product/{product}', UpdateProduct::class)->name('update-product');
 
-    Route::get('/orders', Order::class)->name('orders');
+    Route::get('/orders/create', Order::class)->name('create-order');
     Route::get('/order/{order}', OrderDetails::class)->name('order-details');
 
     Route::get('/order/{order}/print', PrintOrderDetails::class)->name('print-details');
+
+    Route::get('/orders', OrderListing::class)->name('orders-listing');
 
 });
