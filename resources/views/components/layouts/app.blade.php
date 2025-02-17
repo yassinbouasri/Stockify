@@ -9,6 +9,8 @@
         </style>
 
         <title>{{ $title ?? 'Page Title' }}</title>
+
+
     </head>
     <body>
     <x-slot name="header">
