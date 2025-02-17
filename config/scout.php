@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Customer;
+use App\Models\Order;
 use App\Models\Product;
 
 return [
@@ -235,6 +236,33 @@ return [
                 ],
                 'search-parameters' => [
                     'query_by' => 'name, sku'
+
+                ],
+            ],
+            Order::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => 'id' ,
+                            'type' => 'string'
+                        ],
+                        [
+                            'name' => 'invoice_number',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'status',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'created_at',
+                            'type' => 'int64',
+                        ],
+                    ],
+                    'default_sorting_field' => 'created_at',
+                ],
+                'search-parameters' => [
+                    'query_by' => 'invoice_number, status'
 
                 ],
             ],
