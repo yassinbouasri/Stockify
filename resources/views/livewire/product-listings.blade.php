@@ -47,7 +47,7 @@
 
                 @empty
                     <span>
-                        <p></p>
+                        <p>-</p>
                         @endforelse
                     </span>
                     <td class="flex gap-1">

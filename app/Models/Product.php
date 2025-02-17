@@ -54,9 +54,9 @@ class Product extends Model
     {
         return array_merge($this->toArray(),[
             'id' => (string) $this->id,
+            'category' => $this->category->name,
             'created_at' => $this->created_at->timestamp,
         ]);
     }
-
 
 }

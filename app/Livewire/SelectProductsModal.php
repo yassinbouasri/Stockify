@@ -6,7 +6,6 @@ use App\Models\Product;
 use App\Models\Stock;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -32,20 +31,13 @@ class SelectProductsModal extends Component
     #[Computed]
     public function searchedProducts()
     {
-
         $query = '';
         if (!empty($this->query)) {
             $query = $this->query;
         }
         return Product::search($query)
-            ->query(fn(Builder $builder)
-                        => $builder->with(['category', 'stocks'])
-                               ->whereHas('stocks', function ($stockQuery) {
-                                   $stockQuery->where('quantity', '>', 0);
-                               }))
-            ->orderByDesc('created_at')
-            ->paginate(20);
-    }
+                      ->query(fn(Builder $builder) => $builder->with(['category', 'stocks'])->orderBy('created_at', 'desc'))
+                      ->paginate(20);
 
     public function toggleProduct(int $product)
     {
