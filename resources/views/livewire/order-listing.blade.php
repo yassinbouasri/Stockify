@@ -25,7 +25,7 @@
         <tbody class="text-gray-700 dark:text-gray-400">
         @foreach($this->orders as $order)
             <tbody x-data="{ expanded: false }">
-            <tr class="border-b dark:border-gray-600 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700">
+            <tr  class="border-b dark:border-gray-600 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700">
                 <td class="p-3">
                     <button
                             @click="expanded = !expanded"

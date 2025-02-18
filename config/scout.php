@@ -153,7 +153,10 @@ return [
             ],
             'orders' => [
                 'filterableAttributes' => ['id', 'invoice_number', 'status'],
-            ]
+            ],
+            'customers' => [
+                'filterableAttributes' => ['id', 'name', 'email', 'address', 'address'],
+            ],
         ],
     ],
 

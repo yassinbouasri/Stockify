@@ -36,10 +36,7 @@ class SelectProductsModal extends Component
             $query = $this->query;
         }
         return Product::search($query)
-                      ->query(fn(Builder $builder) => $builder->with(['category', 'stocks'])->orderBy('created_at',
-                                                                                                      'desc'
-                      )
-                      )
+                      ->query(fn(Builder $builder) => $builder->with(['category', 'stocks']))
                       ->paginate(20);
     }
     public function toggleProduct(int $product)

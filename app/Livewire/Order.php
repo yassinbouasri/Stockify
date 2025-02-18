@@ -22,6 +22,7 @@ class Order extends Component
     public array $products = [];
     public ?array $quantities = [];
     public array $maxQuantities = [];
+
     protected $listeners = [
         'selectedCustomer', 'selectedProducts', 'maxQuantities',
     ];
