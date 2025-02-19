@@ -75,12 +75,16 @@ class OrderForm extends Form
     }
 
 
-    public function update()
+    public function update( array $quantities, array $maxQuantities, OrderProductAttacher $orderAttach )
     {
 //        $this->validate();
 
-        return DB::transaction(function () {
+        return DB::transaction(function () use($quantities, $orderAttach, $maxQuantities) {
+            $products = $this->order->products;
 
+            $this->setTotalPrice($products,$quantities);
+            $orderAttach->updateProduct($products, $this->order,$quantities, $maxQuantities);
+            return $this->order->refresh();
         });
 
     }

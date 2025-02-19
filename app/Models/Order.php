@@ -23,6 +23,8 @@ class Order extends Model
         'total_price' => MoneyCast::class,
     ];
 
+
+
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);

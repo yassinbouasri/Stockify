@@ -30,7 +30,7 @@ class OrderProductAttacher
                     'total_amount' => $totalAmount->getAmount(),
                 ]);
 
-            $this->stockService->decrement($product,$quantities[$product->id]);
+            $this->stockService->decrement($product,$quantity);
 
         }
 
@@ -41,10 +41,24 @@ class OrderProductAttacher
         foreach ($products as $product) {
             $quantity = $this->validateQuantity($maxQuantities[$product->id], $product, $quantities[$product->id]);
 
+            $previousQuantity = $order->products()->where('product_id', $product->id)->first()->pivot->quantity ?? 0;
+            $quantityDifference = $quantity - $previousQuantity;
 
             $totalAmount = $product->price->multiply($quantity);
 
-            //TODO: product order sync
+            $order->products()->updateExistingPivot(
+                $product,
+                [
+                'quantity' => $quantity,
+                'total_amount' => $totalAmount->getAmount(),
+            ]);
+
+            if ($quantityDifference >= 0) {
+                $this->stockService->increment($product,$quantityDifference);
+            }
+            elseif ($quantityDifference < 0) {
+                $this->stockService->decrement($product,abs($quantityDifference));
+            }
 
         }
     }
