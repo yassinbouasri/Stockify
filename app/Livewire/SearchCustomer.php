@@ -49,7 +49,7 @@ class SearchCustomer extends Component
         }
 
         $this->showSection = true;
-        return Customer::search($this->search)->options(['name', 'email'])->get();
+        return Customer::search($this->search)->get();
     }
 
     public function render()

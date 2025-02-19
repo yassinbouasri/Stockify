@@ -22,6 +22,8 @@ class Order extends Component
     public array $products = [];
     public ?array $quantities = [];
     public array $maxQuantities = [];
+
+
     protected $listeners = [
         'selectedCustomer', 'selectedProducts', 'maxQuantities',
     ];
@@ -62,7 +64,8 @@ class Order extends Component
         $this->banner('Order placed');
     }
 
-    public function getMaxAndDefaultQuantity($value): array
+
+    private function getMaxAndDefaultQuantity($value): array
     {
         return array_map('intval', array_intersect_key($value, array_flip($this->products)));
     }
