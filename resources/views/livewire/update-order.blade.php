@@ -3,8 +3,6 @@
 <div class="flex" wire:click="$dispatch('search:clear-results')">
     <x-slot:header>Orders Management</x-slot:header>
 
-
-
     <div class="w-2/5 ">
         <div class=" mx-4 my-4">
 
@@ -13,7 +11,7 @@
         </div>
         <form wire:submit="store" class="mt-4 mb-4" >
 
-            <livewire:search-customer/>
+            <livewire:search-customer :customer="$this->customer" />
 
 
             <div class=" mx-4 my-4">
@@ -64,6 +62,6 @@
         </form>
     </div>
     <div class="w-2/6  text-white mx-40 my-20">
-        <livewire:product-cart  wire:model.defer="quantities" />
+        <livewire:product-cart :products="$this->products"  wire:model.defer="quantities" />
     </div>
 </div>
