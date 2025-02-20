@@ -9,17 +9,19 @@ use App\Enums\Status;
 use App\Livewire\Forms\OrderForm;
 use App\Models\Customer;
 use App\Models\Product;
+use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 
 #[AllowDynamicProperties]
 class UpdateOrder extends Component
 {
     public OrderForm $form;
-    public  $customer = null;
-    public array $products = [];
+    public Customer $customer;
+    public ?Collection $products = null;
+    public array $productList = [];
     public ?array $quantities = [];
     public array $maxQuantities = [];
-//    public \App\Models\Order $order;
+
 
 
     protected $listeners = [
@@ -28,13 +30,13 @@ class UpdateOrder extends Component
 
     public function selectedProducts(array $products)
     {
-        $this->products = $products;
+        $this->productList = $products;
     }
 
-//    public function selectedCustomer(Customer $customer)
-//    {
-//        $this->customer = $customer;
-//    }
+    public function selectedCustomer(Customer $customer)
+    {
+        $this->customer = $customer;
+    }
 
     public function maxQuantities(array $quantities)
     {
@@ -45,7 +47,7 @@ class UpdateOrder extends Component
         $this->form->setOrder($order);
         $this->paymentMethod = PaymentMethod::cases();
         $this->customer = $order->customer;
-
+        $this->products = $order->products;
     }
 
     public function editOrder(OrderProductAttacher $orderAttach)

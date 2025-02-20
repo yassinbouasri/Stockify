@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Product;
+use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Modelable;
 use Livewire\Component;
@@ -12,7 +13,9 @@ class ProductCart extends Component
 {
     use WithPagination;
 
-    public array $products = [];
+    public ?Collection $products = null;
+
+    public array $productList = [];
     #[Modelable]
     public array $quantities = [];
 
@@ -22,30 +25,38 @@ class ProductCart extends Component
         'selectedProducts'
     ];
 
-    public function selectedProducts(array $products)
+    public function mount(Collection $products)
     {
         $this->products = $products;
+    }
+
+    public function selectedProducts(array $products)
+    {
+        $this->productList = $products;
         $this->resetPage();
     }
 
     #[Computed(cache: false)]
     public function productList()
     {
-        if (!$this->products) {
+        if (!$this->productList) {
             return [];
         }
 
-        $products = Product::whereIn('id', $this->products)->with(['category', 'stocks'])->orderByDesc('created_at')->paginate(10);
+        $products = Product::whereIn('id', $this->productList)
+                           ->with(['category', 'stocks'])
+                           ->orderByDesc('created_at')
+                           ->paginate(10);
 
         $this->setDefaultQuantity($products);
         $this->setMaxQuantity($products);
 
-        return $products;
+        return $products ?? $this->products;
     }
 
     public function setDefaultQuantity($products): void
     {
-        $this->quantities = array_map('intval', array_intersect_key($this->quantities, array_flip($this->products)));
+        $this->quantities = array_map('intval', array_intersect_key($this->quantities, array_flip($this->productList)));
 
         foreach ($products as $product) {
             if (!isset($this->quantities[$product->id])) {
