@@ -16,6 +16,10 @@ class SearchCustomer extends Component
 
     public Customer $customer;
 
+    public function mount(Customer $customer)
+    {
+        $this->search = $customer->email;
+    }
 
     public function updatedSearch()
     {

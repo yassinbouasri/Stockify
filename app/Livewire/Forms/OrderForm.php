@@ -35,7 +35,7 @@ class OrderForm extends Form
     public function setOrder(Order $order)
     {
         $this->order = $order;
-        $this->customer_id = $order->customer;
+        $this->customer_id = $order->customer->id;
         $this->invoice_number = $order->invoice_number;
         $this->total_price = $order->total_price->getAmount() / 100;
         $this->status = $order->status;

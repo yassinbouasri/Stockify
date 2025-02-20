@@ -13,7 +13,7 @@
         </div>
         <form wire:submit="store" class="mt-4 mb-4" >
 
-            <livewire:search-customer/>
+            <livewire:search-customer :customer="$this->customer" />
 
 
             <div class=" mx-4 my-4">

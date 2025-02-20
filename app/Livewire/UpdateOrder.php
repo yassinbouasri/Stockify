@@ -15,7 +15,7 @@ use Livewire\Component;
 class UpdateOrder extends Component
 {
     public OrderForm $form;
-    public ?Customer $customer = null;
+    public  $customer = null;
     public array $products = [];
     public ?array $quantities = [];
     public array $maxQuantities = [];
@@ -31,10 +31,10 @@ class UpdateOrder extends Component
         $this->products = $products;
     }
 
-    public function selectedCustomer(Customer $customer)
-    {
-        $this->customer = $customer;
-    }
+//    public function selectedCustomer(Customer $customer)
+//    {
+//        $this->customer = $customer;
+//    }
 
     public function maxQuantities(array $quantities)
     {
@@ -44,6 +44,7 @@ class UpdateOrder extends Component
     {
         $this->form->setOrder($order);
         $this->paymentMethod = PaymentMethod::cases();
+        $this->customer = $order->customer;
 
     }
 
