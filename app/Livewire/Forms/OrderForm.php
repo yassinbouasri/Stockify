@@ -77,14 +77,17 @@ class OrderForm extends Form
 
     public function update( array $quantities, array $maxQuantities, OrderProductAttacher $orderAttach )
     {
-//        $this->validate();
+        $this->validate();
 
         return DB::transaction(function () use($quantities, $orderAttach, $maxQuantities) {
             $products = $this->order->products;
 
             $this->setTotalPrice($products,$quantities);
+
+            $this->order->update($this->only(['customer_id', 'invoice_number', 'total_price', 'status', 'payment_method']));
+
             $orderAttach->updateProduct($products, $this->order,$quantities, $maxQuantities);
-            return $this->order->refresh();
+            return $this->order;
         });
 
     }

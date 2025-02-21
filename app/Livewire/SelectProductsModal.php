@@ -31,13 +31,20 @@ class SelectProductsModal extends Component
     #[Computed]
     public function searchedProducts()
     {
-        $query = '';
-        if (!empty($this->query)) {
-            $query = $this->query;
+        $query = $this->query ?? '';
+
+        $baseQuery = Product::query()->whereHas('stocks', function (Builder $query) {
+            $query->where('stocks.quantity', '>', 0);
         }
-        return Product::search($query)
-                      ->query(fn(Builder $builder) => $builder->with(['category', 'stocks']))
-                      ->paginate(20);
+        )->with(['stocks', 'category']);
+
+        if (!empty($query)) {
+             return Product::search($query)
+                               ->query(fn(Builder $builder) => $builder->mergeConstraintsFrom($baseQuery))
+                               ->paginate(20);
+        }
+        return $baseQuery->paginate(20);
+
     }
     public function toggleProduct(int $product)
     {
