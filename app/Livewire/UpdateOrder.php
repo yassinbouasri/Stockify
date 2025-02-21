@@ -18,12 +18,12 @@ class UpdateOrder extends Component
     use InteractsWithBanner;
     public OrderForm $form;
     public Customer $customer;
-    protected Order $order;
+    public Order $order;
     public ?Collection $products = null;
     public array $productList = [];
     public ?array $quantities = [];
     public array $maxQuantities = [];
-    public $paymentMethod;
+
 
 
 
@@ -49,7 +49,6 @@ class UpdateOrder extends Component
     {
         $this->order = $order;
         $this->form->setOrder($order);
-        $this->paymentMethod = PaymentMethod::cases();
         $this->customer = $order->customer;
         $this->products = $order->products;
     }
@@ -60,6 +59,7 @@ class UpdateOrder extends Component
         $this->quantities = session()->get('quantities');
         $this->maxQuantities = session()->get('maxQuantities');
 
+
         $this->form->update($this->quantities, $this->maxQuantities, $orderAttach);
 
         $this->banner('Order edited');
@@ -67,7 +67,8 @@ class UpdateOrder extends Component
     public function render()
     {
         return view('livewire.update-order', [
-            'ordersStatus' => Status::cases()
+            'ordersStatus' => Status::cases(),
+            'paymentMethods' => PaymentMethod::cases(),
         ]);
     }
 }

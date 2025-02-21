@@ -39,13 +39,12 @@ class SelectProductsModal extends Component
         )->with(['stocks', 'category']);
 
         if (!empty($query)) {
-            $products = Product::search($query)
+             return Product::search($query)
                                ->query(fn(Builder $builder) => $builder->mergeConstraintsFrom($baseQuery))
                                ->paginate(20);
-        } else {
-            $products = $baseQuery->paginate(20);
         }
-        return $products;
+        return $baseQuery->paginate(20);
+
     }
     public function toggleProduct(int $product)
     {

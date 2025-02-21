@@ -21,17 +21,21 @@ class ProductListing extends Component
         $this->resetPage();
     }
 
-    #[Computed]
+    #[Computed(cache: false)]
     public function searchedProducts()
     {
-        $query = '';
-        if (!empty($this->query)) {
-            $query = $this->query;
-        }
+        $query = trim($this->query ?? '');
 
-        return Product::search($query)
-            ->query(fn(Builder $builder) => $builder->with(['category', 'stocks']))
-                      ->paginate(20);
+        $baseQuery = Product::select()
+                            ->with(['stocks', 'category'])
+                            ->orderByDesc('created_at');
+
+        if (!empty($query)){
+            return Product::search($query)
+                               ->query(fn(Builder $builder) => $builder->with(['stocks', 'category'])->mergeConstraintsFrom($baseQuery))
+                               ->paginate(20);
+        }
+        return $baseQuery->paginate(20);
 
     }
 
