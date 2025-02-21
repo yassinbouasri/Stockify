@@ -14,9 +14,9 @@ class ProductCart extends Component
     use WithPagination;
 
     public ?Collection $products = null;
+    public ?\App\Models\Order $order = null;
 
-    public array $productList = [];
-    #[Modelable]
+    public array $productIdsList = [];
     public array $quantities = [];
 
     public array $maxQuantities = [];
@@ -24,26 +24,40 @@ class ProductCart extends Component
     protected $listeners = [
         'selectedProducts'
     ];
+    protected $rules = [
+        'quantities' => 'array',
+    ];
 
-    public function mount(Collection $products)
+
+    public function mount(Collection $products, \App\Models\Order $order)
     {
         $this->products = $products;
+        $this->order = $order;
+
+
+        foreach ($products->filter() as $product) {
+            $this->quantities[$product->id] = $product->pivot->quantity ?? 1;
+            foreach ($product->stocks as $stock) {
+                $this->maxQuantities[$product->id] = $stock->quantity;
+            }
+        }
     }
+
 
     public function selectedProducts(array $products)
     {
-        $this->productList = $products;
+        $this->productIdsList = $products;
         $this->resetPage();
     }
 
     #[Computed(cache: false)]
     public function productList()
     {
-        if (!$this->productList) {
-            return [];
+        if (empty($this->productIdsList)) {
+            $this->productIdsList = $this->products->pluck('id')->toArray();
         }
 
-        $products = Product::whereIn('id', $this->productList)
+        $products = Product::whereIn('id', $this->productIdsList)
                            ->with(['category', 'stocks'])
                            ->orderByDesc('created_at')
                            ->paginate(10);
@@ -51,12 +65,12 @@ class ProductCart extends Component
         $this->setDefaultQuantity($products);
         $this->setMaxQuantity($products);
 
-        return $products ?? $this->products;
+        return $products;
     }
 
-    public function setDefaultQuantity($products): void
+    private function setDefaultQuantity($products): void
     {
-        $this->quantities = array_map('intval', array_intersect_key($this->quantities, array_flip($this->productList)));
+        $this->quantities = array_map('intval', array_intersect_key($this->quantities, array_flip($this->productIdsList)));
 
         foreach ($products as $product) {
             if (!isset($this->quantities[$product->id])) {
@@ -64,8 +78,9 @@ class ProductCart extends Component
             }
 
         }
+        session()->put('quantities', $this->quantities);
     }
-    public function setMaxQuantity($products)
+    private function setMaxQuantity($products)
     {
         foreach ($products as $product) {
             foreach ($product->stocks as $stock) {

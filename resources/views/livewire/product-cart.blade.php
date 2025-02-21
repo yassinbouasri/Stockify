@@ -10,25 +10,21 @@
         </tr>
         </thead>
         <tbody class="text-gray-700 dark:text-gray-400">
-        @php
-        $productCollection = (count($this->productList) > 0) ? $this->productList : $this->products;
-        @endphp
-        @foreach($productCollection as $product)
+        @foreach($this->productList as $product)
             <tr>
                 <td class="px-1">{{ $product->name }}</td>
                 <td class="px-1">{{ $product->sku }}</td>
                 <td class="px-1">{{ $product->price }}</td>
                 <td class="px-1">
                             <x-input
-
-                                wire:key="stock-{{ $product->id ?? 0 }}"
-                                wire:model="quantities.{{ $product->id ?? 0 }}"
+                                wire:key="product-{{ $product->id }}"
+                                wire:model.live="quantities.{{ $product->id }}"
+{{--                                max="{{ $this->maxQuantities[$product->id] }}"--}}
                                 type="number"
                                 min="1"
-                                max="{{ $this->maxQuantities[$product->id] ?? 0 }}"
-                                value="1"
                                 class="w-20 h-7  rounded-md py-2  px-1 mt-1"
                             />
+
                 </td>
             </tr>
 

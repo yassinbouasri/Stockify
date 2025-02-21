@@ -28,7 +28,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('update-product/{product}', UpdateProduct::class)->name('update-product');
 
     Route::get('/orders/create', Order::class)->name('create-order');
-    Route::get('/order/{order}', OrderDetails::class)->name('order-details');
+    Route::get('/order/{order}/details', OrderDetails::class)->name('order-details');
 
     Route::get('/order/{order}/print', PrintOrderDetails::class)->name('print-details');
 

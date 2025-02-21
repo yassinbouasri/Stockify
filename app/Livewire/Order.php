@@ -20,12 +20,13 @@ class Order extends Component
 
     public ?Customer $customer = null;
     public array $products = [];
-    public ?array $quantities = [];
+    public array $quantities = [];
     public array $maxQuantities = [];
 
 
     protected $listeners = [
         'selectedCustomer', 'selectedProducts', 'maxQuantities',
+
     ];
 
     public function selectedProducts(array $products)
@@ -46,22 +47,23 @@ class Order extends Component
     public function mount()
     {
         $this->paymentMethod = PaymentMethod::cases();
+        $this->quantities[108] = 1;
     }
 
 
     public function store(OrderProductAttacher $orderAttach)
     {
-        $this->quantities = $this->getMaxAndDefaultQuantity($this->quantities);
+
+        $this->quantities = $this->getMaxAndDefaultQuantity(session()->get('quantities'));
         $this->maxQuantities = $this->getMaxAndDefaultQuantity(session()->get('maxQuantities'));
 
 
         $this->validation();
 
         $order = $this->form->save($this->products, $this->quantities, $orderAttach, $this->maxQuantities);
-
-
-        redirect()->route('order-details', ['order' => $order->id]);
         $this->banner('Order placed');
+        redirect()->route('order-details', ['order' => $order->id]);
+
     }
 
 
@@ -70,9 +72,6 @@ class Order extends Component
         return array_map('intval', array_intersect_key($value, array_flip($this->products)));
     }
 
-    /**
-     * @return void
-     */
     public function validation(): void
     {
         $this->validate([

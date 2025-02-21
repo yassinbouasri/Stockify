@@ -8,7 +8,7 @@ use App\Enums\PaymentMethod;
 use App\Enums\Status;
 use App\Livewire\Forms\OrderForm;
 use App\Models\Customer;
-use App\Models\Product;
+use App\Models\Order;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 
@@ -17,6 +17,7 @@ class UpdateOrder extends Component
 {
     public OrderForm $form;
     public Customer $customer;
+    protected Order $order;
     public ?Collection $products = null;
     public array $productList = [];
     public ?array $quantities = [];
@@ -44,6 +45,7 @@ class UpdateOrder extends Component
     }
     public function mount(\App\Models\Order $order)
     {
+        $this->order = $order;
         $this->form->setOrder($order);
         $this->paymentMethod = PaymentMethod::cases();
         $this->customer = $order->customer;
