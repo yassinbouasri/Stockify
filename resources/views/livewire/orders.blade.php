@@ -1,7 +1,7 @@
 @php use App\Enums\Status; @endphp
 @php use App\Enums\PaymentMethod; @endphp
 <div class="flex" wire:click="$dispatch('search:clear-results')">
-    <x-slot:header>Orders Management</x-slot:header>
+    <x-slot:header>Create Order</x-slot:header>
 
 
 

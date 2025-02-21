@@ -19,7 +19,7 @@
                             <x-input
                                 wire:key="product-{{ $product->id }}"
                                 wire:model.live="quantities.{{ $product->id }}"
-{{--                                max="{{ $this->maxQuantities[$product->id] }}"--}}
+                                max="{{ $this->maxQuantities[$product->id] }}"
                                 type="number"
                                 min="1"
                                 class="w-20 h-7  rounded-md py-2  px-1 mt-1"
@@ -34,7 +34,7 @@
 
     </table>
         <diV>
-{{--            {{ $this->productList->onEachSide(1)->links() }}--}}
+            {{ $this->productList->onEachSide(1)->links() }}
         </diV>
 
     @endif

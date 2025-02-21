@@ -1,7 +1,7 @@
 @php use App\Enums\Status; @endphp
 @php use App\Enums\PaymentMethod; @endphp
 <div class="flex" wire:click="$dispatch('search:clear-results')">
-    <x-slot:header>Orders Management</x-slot:header>
+    <x-slot:header>Update Order</x-slot:header>
 
     <div class="w-2/5 ">
         <div class=" mx-4 my-4">
@@ -9,7 +9,7 @@
             <livewire:select-products-modal/>
 
         </div>
-        <form wire:submit="store" class="mt-4 mb-4" >
+        <form wire:submit="editOrder" class="mt-4 mb-4" >
 
             <livewire:search-customer :customer="$this->customer" />
 
@@ -57,7 +57,7 @@
 
             <div class=" mx-4 my-4">
 
-                <x-button>Create Order</x-button>
+                <x-button>Update Order</x-button>
             </div>
         </form>
     </div>

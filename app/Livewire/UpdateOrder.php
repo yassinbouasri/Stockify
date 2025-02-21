@@ -10,11 +10,12 @@ use App\Livewire\Forms\OrderForm;
 use App\Models\Customer;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Collection;
+use Laravel\Jetstream\InteractsWithBanner;
 use Livewire\Component;
 
-#[AllowDynamicProperties]
 class UpdateOrder extends Component
 {
+    use InteractsWithBanner;
     public OrderForm $form;
     public Customer $customer;
     protected Order $order;
@@ -22,6 +23,7 @@ class UpdateOrder extends Component
     public array $productList = [];
     public ?array $quantities = [];
     public array $maxQuantities = [];
+    public $paymentMethod;
 
 
 
@@ -54,8 +56,9 @@ class UpdateOrder extends Component
 
     public function editOrder(OrderProductAttacher $orderAttach)
     {
-        $this->quantities = $this->getMaxAndDefaultQuantity($this->quantities);
-        $this->maxQuantities = $this->getMaxAndDefaultQuantity(session()->get('maxQuantities'));
+
+        $this->quantities = session()->get('quantities');
+        $this->maxQuantities = session()->get('maxQuantities');
 
         $this->form->update($this->quantities, $this->maxQuantities, $orderAttach);
 
