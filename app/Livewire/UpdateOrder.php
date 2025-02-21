@@ -8,19 +8,22 @@ use App\Enums\PaymentMethod;
 use App\Enums\Status;
 use App\Livewire\Forms\OrderForm;
 use App\Models\Customer;
-use App\Models\Product;
+use App\Models\Order;
 use Illuminate\Database\Eloquent\Collection;
+use Laravel\Jetstream\InteractsWithBanner;
 use Livewire\Component;
 
-#[AllowDynamicProperties]
 class UpdateOrder extends Component
 {
+    use InteractsWithBanner;
     public OrderForm $form;
     public Customer $customer;
+    protected Order $order;
     public ?Collection $products = null;
     public array $productList = [];
     public ?array $quantities = [];
     public array $maxQuantities = [];
+    public $paymentMethod;
 
 
 
@@ -44,6 +47,7 @@ class UpdateOrder extends Component
     }
     public function mount(\App\Models\Order $order)
     {
+        $this->order = $order;
         $this->form->setOrder($order);
         $this->paymentMethod = PaymentMethod::cases();
         $this->customer = $order->customer;
@@ -52,8 +56,9 @@ class UpdateOrder extends Component
 
     public function editOrder(OrderProductAttacher $orderAttach)
     {
-        $this->quantities = $this->getMaxAndDefaultQuantity($this->quantities);
-        $this->maxQuantities = $this->getMaxAndDefaultQuantity(session()->get('maxQuantities'));
+
+        $this->quantities = session()->get('quantities');
+        $this->maxQuantities = session()->get('maxQuantities');
 
         $this->form->update($this->quantities, $this->maxQuantities, $orderAttach);
 

@@ -1,7 +1,7 @@
 @php use App\Enums\Status; @endphp
 @php use App\Enums\PaymentMethod; @endphp
 <div class="flex" wire:click="$dispatch('search:clear-results')">
-    <x-slot:header>Orders Management</x-slot:header>
+    <x-slot:header>Create Order</x-slot:header>
 
 
 
@@ -64,6 +64,6 @@
         </form>
     </div>
     <div class="w-2/6  text-white mx-40 my-20">
-        <livewire:product-cart  wire:model.defer="quantities" />
+        <livewire:product-cart wire:model.live.defer="quantities" />
     </div>
 </div>
