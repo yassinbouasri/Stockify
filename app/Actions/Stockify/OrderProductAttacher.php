@@ -55,17 +55,16 @@ class OrderProductAttacher
 
             $totalAmount = $product->price->multiply($quantity);
 
-            foreach ($allProducts as $p) {
-//                dd($quantities[$p->id]);
+
                $order->products()->syncWithPivotValues(
-                   $p ,
+                              $product ,
                     [
-                        'quantity' => $quantities[$p->id] ?? 1,
+                        'quantity' => $quantities[$product->id] ?? 1,
                         'total_amount' => $totalAmount->getAmount(),
                     ],
                    detaching: false
                 );
-            }
+
 
 
             if ($quantityDifference >= 0) {
