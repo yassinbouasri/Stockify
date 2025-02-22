@@ -51,6 +51,8 @@ class UpdateOrder extends Component
         $this->form->setOrder($order);
         $this->customer = $order->customer;
         $this->products = $order->products;
+        session()->put('order.products',$order->products->pluck('id')->toArray());
+
     }
 
     public function editOrder(OrderProductAttacher $orderAttach)
@@ -60,7 +62,7 @@ class UpdateOrder extends Component
         $this->maxQuantities = session()->get('maxQuantities');
 
 
-        $this->form->update($this->quantities, $this->maxQuantities, $orderAttach, $this->productList);
+        $this->form->update($this->productList,$this->quantities, $this->maxQuantities, $orderAttach);
 
         $this->banner('Order edited');
     }

@@ -37,16 +37,13 @@ class OrderProductAttacher
 
     }
 
-    public function updateProduct($products, $order, array $quantities, array $maxQuantities, ?array $newProducts = [])
+    public function updateProduct($products, $order, array $quantities, array $maxQuantities)
     {
-
-        $NewAndOldProductsIds = array_unique(array_merge($products->pluck('id')->toArray(), $newProducts));
-
-        $allProducts = Product::whereIn('id', $NewAndOldProductsIds)->get();
-
-
-
-        foreach ($allProducts as $product) {
+        $syncData = [];
+        if (count($products) === 0) {
+            $products = $order->products;
+        }
+        foreach ($products as $product) {
 
             $quantity = $this->validateQuantity($maxQuantities[$product->id], $product, $quantities[$product->id]);
 
@@ -55,16 +52,12 @@ class OrderProductAttacher
 
             $totalAmount = $product->price->multiply($quantity);
 
+            $syncData[$product->id] = [
+                'quantity' => $quantity,
+                'total_amount' => $product->price->multiply($quantity)->getAmount()
+            ];
 
-               $order->products()->syncWithPivotValues(
-                              $product ,
-                    [
-                        'quantity' => $quantities[$product->id] ?? 1,
-                        'total_amount' => $totalAmount->getAmount(),
-                    ],
-                   detaching: false
-                );
-
+           $this->syncPivot($order,$products);
 
 
             if ($quantityDifference >= 0) {
@@ -75,6 +68,8 @@ class OrderProductAttacher
             }
 
         }
+
+        $order->products()->syncWithoutDetaching($syncData);
 
     }
 
@@ -101,6 +96,16 @@ class OrderProductAttacher
         }
 
         return $quantity;
+    }
+
+    private function syncPivot($order,  $products): void
+    {
+        foreach ($order->products as $p) {
+            if (!array_key_exists($p->id, array_flip($products->pluck('id')->toArray()))) {
+                $order->products()->detach($p->id);
+            }
+        }
+
     }
 
 }

@@ -54,13 +54,13 @@ class OrderForm extends Form
             $this->total_price += $product->price->multiply($quantities[$product->id])->getAmount();
         }
     }
-    public function save($productId, array $quantities, OrderProductAttacher $orderAttach, array $maxQuantities)
+    public function save($productIds, array $quantities, OrderProductAttacher $orderAttach, array $maxQuantities)
     {
         $this->validate();
 
-        return DB::transaction(function () use ($productId, $quantities, $orderAttach,$maxQuantities) {
+        return DB::transaction(function () use ($productIds, $quantities, $orderAttach,$maxQuantities) {
 
-            $products = Product::find($productId);
+            $products = Product::find($productIds);
 
             $this->setTotalPrice($products,$quantities);
 
@@ -75,18 +75,18 @@ class OrderForm extends Form
     }
 
 
-    public function update(array $quantities, array $maxQuantities, OrderProductAttacher $orderAttach, ?array $newProducts = [])
+    public function update($productIds,array $quantities, array $maxQuantities, OrderProductAttacher $orderAttach)
     {
         $this->validate();
 
-        return DB::transaction(function () use($quantities, $orderAttach, $maxQuantities,$newProducts) {
-            $products = $this->order->products;
+        return DB::transaction(function () use($productIds, $quantities, $orderAttach, $maxQuantities) {
+            $products = Product::find($productIds);
 
             $this->setTotalPrice($products,$quantities);
 
             $this->order->update($this->only(['customer_id', 'invoice_number', 'total_price', 'status', 'payment_method']));
 
-            $orderAttach->updateProduct($products, $this->order, $quantities, $maxQuantities, $newProducts);
+            $orderAttach->updateProduct($products, $this->order, $quantities, $maxQuantities);
             return $this->order->fresh(['products']);
         });
 

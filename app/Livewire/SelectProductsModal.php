@@ -48,7 +48,15 @@ class SelectProductsModal extends Component
     }
     public function toggleProduct(int $product)
     {
+        $sessionProducts = [];
+        foreach (session()->get('order.products') as $sessionProduct) {
+            $sessionProducts[$sessionProduct] =  true;
+        }
+
         $this->selectedProducts[$product] =  !($this->selectedProducts[$product] ?? false);
+
+        $this->selectedProducts += $sessionProducts;
+
         $this->dispatch('selectedProducts', array_keys(array_filter($this->selectedProducts)));
     }
 
