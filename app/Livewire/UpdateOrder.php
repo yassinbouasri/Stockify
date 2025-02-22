@@ -60,10 +60,11 @@ class UpdateOrder extends Component
         $this->maxQuantities = session()->get('maxQuantities');
 
 
-        $this->form->update($this->quantities, $this->maxQuantities, $orderAttach);
+        $this->form->update($this->quantities, $this->maxQuantities, $orderAttach, $this->productList);
 
         $this->banner('Order edited');
     }
+
     public function render()
     {
         return view('livewire.update-order', [

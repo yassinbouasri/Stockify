@@ -22,6 +22,7 @@ class OrderProductAttacher
             $quantity = $this->validateQuantity($maxQuantities[$product->id], $product, $quantities[$product->id]);
 
 
+
             $totalAmount = $product->price->multiply($quantity);
             $order->products()->attach(
                 $product,
@@ -36,9 +37,17 @@ class OrderProductAttacher
 
     }
 
-    public function updateProduct($products, $order, array $quantities, array $maxQuantities)
+    public function updateProduct($products, $order, array $quantities, array $maxQuantities, ?array $newProducts = [])
     {
-        foreach ($products as $product) {
+
+        $NewAndOldProductsIds = array_unique(array_merge($products->pluck('id')->toArray(), $newProducts));
+
+        $allProducts = Product::whereIn('id', $NewAndOldProductsIds)->get();
+
+
+
+        foreach ($allProducts as $product) {
+
             $quantity = $this->validateQuantity($maxQuantities[$product->id], $product, $quantities[$product->id]);
 
             $previousQuantity = $order->products()->where('product_id', $product->id)->first()->pivot->quantity ?? 0;
@@ -46,12 +55,18 @@ class OrderProductAttacher
 
             $totalAmount = $product->price->multiply($quantity);
 
-            $order->products()->updateExistingPivot(
-                $product,
-                [
-                'quantity' => $quantity,
-                'total_amount' => $totalAmount->getAmount(),
-            ]);
+            foreach ($allProducts as $p) {
+//                dd($quantities[$p->id]);
+               $order->products()->syncWithPivotValues(
+                   $p ,
+                    [
+                        'quantity' => $quantities[$p->id] ?? 1,
+                        'total_amount' => $totalAmount->getAmount(),
+                    ],
+                   detaching: false
+                );
+            }
+
 
             if ($quantityDifference >= 0) {
                 $this->stockService->increment($product,$quantityDifference);
@@ -61,6 +76,7 @@ class OrderProductAttacher
             }
 
         }
+
     }
 
     private function validateQuantity($maxQuantities, $product, $quantity)
