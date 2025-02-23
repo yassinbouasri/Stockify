@@ -48,6 +48,7 @@ class Order extends Component
     {
         $this->paymentMethod = PaymentMethod::cases();
         $this->quantities[108] = 1;
+        session()->forget('order.products');
     }
 
 
