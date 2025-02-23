@@ -28,6 +28,7 @@ class SelectProductsModal extends Component
         $this->resetPage();
     }
 
+
     #[Computed]
     public function searchedProducts()
     {
@@ -56,7 +57,7 @@ class SelectProductsModal extends Component
     {
         $this->show = true;
         $this->resetPage();
-        $this->toggleProduct(session: session()->get('order.products'));
+        $this->toggleProduct(session: session()->get('order.products') ?? []);
 
     }
 
