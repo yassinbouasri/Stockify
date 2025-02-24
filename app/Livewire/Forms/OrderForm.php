@@ -3,9 +3,10 @@
 namespace App\Livewire\Forms;
 
 use App\Actions\Stockify\AddProductsToOrder;
-use App\Actions\Stockify\OrderProductAttacher;
+use App\Actions\Stockify\OrderProductService;
 use App\Enums\PaymentMethod;
 use App\Enums\Status;
+use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +20,7 @@ class OrderForm extends Form
 {
     #[Locked]
     public $id = 0;
-    public $customer_id = 1;
+    public $customer_id;
     #[Validate('required')]
     public $invoice_number;
 
@@ -35,7 +36,6 @@ class OrderForm extends Form
     public function setOrder(Order $order)
     {
         $this->order = $order;
-        $this->customer_id = $order->customer->id;
         $this->invoice_number = $order->invoice_number;
         $this->total_price = $order->total_price->getAmount() / 100;
         $this->status = $order->status;
@@ -54,11 +54,13 @@ class OrderForm extends Form
             $this->total_price += $product->price->multiply($quantities[$product->id])->getAmount();
         }
     }
-    public function save($productIds, array $quantities, OrderProductAttacher $orderAttach, array $maxQuantities)
+    public function save($productIds, Customer $customer, array $quantities, OrderProductService $orderProductService, array $maxQuantities)
     {
         $this->validate();
 
-        return DB::transaction(function () use ($productIds, $quantities, $orderAttach,$maxQuantities) {
+        $this->customer_id = $customer->id;
+
+        return DB::transaction(function () use ($productIds, $customer,$quantities, $orderProductService,$maxQuantities) {
 
             $products = Product::find($productIds);
 
@@ -67,7 +69,7 @@ class OrderForm extends Form
 
             $order = Order::firstOrCreate($this->only(['customer_id', 'invoice_number', 'total_price', 'status', 'payment_method']));
 
-            $orderAttach->attachProduct($products, $order, $quantities, $maxQuantities);
+            $orderProductService->attachProduct($products, $order, $quantities, $maxQuantities);
 
             return $order;
         });
@@ -75,18 +77,20 @@ class OrderForm extends Form
     }
 
 
-    public function update($productIds,array $quantities, array $maxQuantities, OrderProductAttacher $orderAttach)
+    public function update($productIds,Customer $customer ,array $quantities, array $maxQuantities, OrderProductService $orderProductService)
     {
         $this->validate();
 
-        return DB::transaction(function () use($productIds, $quantities, $orderAttach, $maxQuantities) {
+        $this->customer_id = $customer->id;
+
+        return DB::transaction(function () use($productIds, $customer, $quantities, $orderProductService, $maxQuantities) {
             $products = Product::find($productIds);
 
             $this->setTotalPrice($products,$quantities);
 
             $this->order->update($this->only(['customer_id', 'invoice_number', 'total_price', 'status', 'payment_method']));
 
-            $orderAttach->updateProduct($products, $this->order, $quantities, $maxQuantities);
+            $orderProductService->updateProduct($products, $this->order, $quantities, $maxQuantities);
             return $this->order->fresh(['products']);
         });
 

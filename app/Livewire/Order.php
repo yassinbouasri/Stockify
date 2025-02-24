@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Actions\Stockify\OrderProductAttacher;
+use App\Actions\Stockify\OrderProductService;
 use App\Enums\PaymentMethod;
 use App\Enums\Status;
 use App\Livewire\Forms\OrderForm;
@@ -52,7 +52,7 @@ class Order extends Component
     }
 
 
-    public function store(OrderProductAttacher $orderAttach)
+    public function store(OrderProductService $orderAttach)
     {
 
         $this->quantities = $this->getMaxAndDefaultQuantity(session()->get('quantities'));
@@ -61,7 +61,7 @@ class Order extends Component
 
         $this->validation();
 
-        $order = $this->form->save($this->products, $this->quantities, $orderAttach, $this->maxQuantities);
+        $order = $this->form->save($this->products, $this->customer,$this->quantities, $orderAttach, $this->maxQuantities);
         $this->banner('Order placed');
         redirect()->route('order-details', ['order' => $order->id]);
 
