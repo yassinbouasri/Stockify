@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use AllowDynamicProperties;
-use App\Actions\Stockify\OrderProductAttacher;
+use App\Actions\Stockify\OrderProductService;
 use App\Enums\PaymentMethod;
 use App\Enums\Status;
 use App\Livewire\Forms\OrderForm;
@@ -16,6 +16,7 @@ use Livewire\Component;
 class UpdateOrder extends Component
 {
     use InteractsWithBanner;
+
     public OrderForm $form;
     public Customer $customer;
     public Order $order;
@@ -48,21 +49,19 @@ class UpdateOrder extends Component
     public function mount(\App\Models\Order $order)
     {
         $this->order = $order;
-        $this->form->setOrder($order);
         $this->customer = $order->customer;
+        $this->form->setOrder($order, $this->customer);
         $this->products = $order->products;
         session()->put('order.products',$order->products->pluck('id')->toArray());
 
     }
 
-    public function editOrder(OrderProductAttacher $orderAttach)
+    public function editOrder(OrderProductService $orderAttach)
     {
 
         $this->quantities = session()->get('quantities');
         $this->maxQuantities = session()->get('maxQuantities');
-
-
-        $this->form->update($this->productList,$this->quantities, $this->maxQuantities, $orderAttach);
+        $this->form->update($this->productList,$this->customer,$this->quantities, $this->maxQuantities, $orderAttach);
 
         $this->banner('Order edited');
     }

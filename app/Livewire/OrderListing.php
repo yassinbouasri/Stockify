@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Actions\Stockify\OrderProductAttacher;
+use App\Actions\Stockify\OrderProductService;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Computed;
@@ -17,13 +17,17 @@ class OrderListing extends Component
     #[Computed]
     public function orders()
     {
-        if (empty($this->query)) {
-            return Order::with(['products', 'customer'])->paginate(20);
-        }
+        $query = trim($this->query ?? '');
 
-        return Order::search($this->query)
-                         ->query(fn(Builder $builder) => $builder->with(['products', 'customer']))
-                         ->paginate(15);
+        $baseQuery = Order::select()
+                            ->with(['products', 'customer'])
+                            ->orderByDesc('created_at');
+        if (!empty($query)) {
+            return Order::search($this->query)
+                        ->query(fn(Builder $builder) => $builder->with(['products', 'customer'])->mergeConstraintsFrom($baseQuery))
+                        ->paginate(20);
+        }
+        return $baseQuery->paginate(20);
     }
 
     public function updatedQuery()

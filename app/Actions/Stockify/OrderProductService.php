@@ -8,7 +8,7 @@ namespace App\Actions\Stockify;
 use App\Validators\QuantityValidator;
 
 
-class OrderProductAttacher
+class OrderProductService
 {
     public function __construct(public ProductStockQuantity $stockService)
     {

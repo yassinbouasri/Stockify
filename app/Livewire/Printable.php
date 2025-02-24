@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Actions\Stockify\OrderProductAttacher;
+use App\Actions\Stockify\OrderProductService;
 use App\Enums\PaymentMethod;
 use App\Enums\Status;
 use App\Livewire\Forms\OrderForm;
