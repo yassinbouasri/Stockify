@@ -40,8 +40,6 @@ class OrderForm extends Form
         $this->total_price = $order->total_price->getAmount() / 100;
         $this->status = $order->status;
         $this->payment_method = $order->payment_method;
-
-
     }
 
     private function setTotalPrice($products, $quantities): void

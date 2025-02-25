@@ -1,0 +1,1 @@
+<input   {!! $attributes->merge(["class" => " w-1/2 p-  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block ps-10 p-2.5  dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300 dark:focus:ring-undigo-600 dark:focus:border-undigo-600"]) !!}/>
