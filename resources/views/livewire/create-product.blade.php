@@ -6,11 +6,13 @@
             <x-input class="w-1/2 p-1"
                      wire:model="form.name"
                      autofocus
+                     placeholder="Type A Product Name"
             />
         </div>
         <div class=" mx-4 my-4">
             <x-label class="p-1">Category:</x-label>
-            <select class="w-1/2 p-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" wire:model="form.category_id">
+            <select class="w-1/2 p-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                    wire:model="form.category_id">
                 @foreach($this->categories as $category)
                     <option value="{{(int) $category->id}}">{{$category->name}}</option>
                 @endforeach
@@ -21,18 +23,28 @@
             <x-label class="p-1">SKU:</x-label>
             <x-input class="w-1/2 p-1"
                      wire:model="form.sku"
+                     placeholder="Type A Product SKU Or Id"
             />
         </div>
         <div class=" mx-4 my-4">
-            <x-label class="p-1">Price:</x-label>
-            <x-input type="number" class="w-1/2 p-1"
-                     wire:model="form.price"
-            />
+
+                <x-label class="p-1">Price:</x-label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none text-gray-500 dark:text-gray-300">
+                        $
+                    </div>
+                    <x-input-money
+                            type="number"
+                            wire:model="form.price"
+                            placeholder="100"/>
+                </div>
+
+
         </div>
         <div class=" mx-4 my-4">
             <x-label class="p-1">Description:</x-label>
 
-            <textarea wire:model="form.description" class="font-medium text-sm text-gray-700 dark:text-gray-300 dark:bg-gray-900 dark:border-gray-600 w-1/2 p-4">
+            <textarea wire:model="form.description" class="font-medium text-sm text-gray-700 dark:text-gray-300 dark:bg-gray-900 dark:border-gray-600 w-1/2 p-4 rounded-md" placeholder="Type Some product specifies..">
 
             </textarea>
         </div>

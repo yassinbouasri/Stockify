@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use AllowDynamicProperties;
 use App\Actions\Stockify\OrderProductService;
 use App\Enums\PaymentMethod;
 use App\Enums\Status;
@@ -26,10 +25,10 @@ class UpdateOrder extends Component
     public array $maxQuantities = [];
 
 
-
-
     protected $listeners = [
-        'selectedCustomer', 'selectedProducts', 'maxQuantities',
+        'selectedCustomer',
+        'selectedProducts',
+        'maxQuantities',
     ];
 
     public function selectedProducts(array $products)
@@ -46,13 +45,14 @@ class UpdateOrder extends Component
     {
         $this->maxQuantities = $quantities;
     }
-    public function mount(\App\Models\Order $order)
+
+    public function mount(Order $order)
     {
         $this->order = $order;
         $this->customer = $order->customer;
-        $this->form->setOrder($order, $this->customer);
+        $this->form->setOrder($order);
         $this->products = $order->products;
-        session()->put('order.products',$order->products->pluck('id')->toArray());
+        session()->put('order.products', $order->products->pluck('id')->toArray());
 
     }
 
@@ -61,7 +61,7 @@ class UpdateOrder extends Component
 
         $this->quantities = session()->get('quantities');
         $this->maxQuantities = session()->get('maxQuantities');
-        $this->form->update($this->productList,$this->customer,$this->quantities, $this->maxQuantities, $orderAttach);
+        $this->form->update($this->productList, $this->customer, $this->quantities, $this->maxQuantities, $orderAttach);
 
         $this->banner('Order edited');
     }
@@ -71,6 +71,7 @@ class UpdateOrder extends Component
         return view('livewire.update-order', [
             'ordersStatus' => Status::cases(),
             'paymentMethods' => PaymentMethod::cases(),
-        ]);
+        ]
+        );
     }
 }
